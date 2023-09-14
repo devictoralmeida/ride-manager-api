@@ -1,15 +1,8 @@
 import 'dotenv/config'
 import 'reflect-metadata'
 import { DataSource, DataSourceOptions } from 'typeorm'
-// import path from 'path'
 
 const settings = (): DataSourceOptions => {
-  //   const entitiesPath: string = path.join(
-  //     __dirname,
-  //     './modules/**/entities/**.{ts,js}',
-  //   )
-  //   const migrationPath: string = path.join(__dirname, './database/**.{ts,js}')
-
   const nodeEnv: string | undefined = process.env.NODE_ENV
 
   if (nodeEnv === 'test') {
@@ -29,8 +22,8 @@ const settings = (): DataSourceOptions => {
     password: 'docker',
     database: 'rentx',
     logging: true,
-    migrations: ['./src/database/migrations/*.ts'],
-    entities: ['./src/modules/**/entities/*.ts'],
+    migrations: ['./src/shared/infra/typeorm/migrations/*.ts'],
+    entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
   }
 }
 
