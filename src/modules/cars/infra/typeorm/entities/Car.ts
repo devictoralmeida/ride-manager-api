@@ -4,14 +4,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm'
-import { v4 as uuidV4 } from 'uuid'
 import { Category } from './Category'
 
 @Entity('cars')
 class Car {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column()
@@ -23,7 +22,7 @@ class Car {
   @Column()
   daily_rate: number
 
-  @Column()
+  @Column({ default: true })
   available: boolean
 
   @Column()
@@ -39,18 +38,13 @@ class Car {
   created_at: Date
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
+  @JoinColumn({
+    name: 'category_id',
+  })
   category: Category
 
-  @Column()
+  @Column({ type: 'uuid', nullable: true })
   category_id: string
-
-  constructor() {
-    if (!this.id) {
-      this.id = uuidV4()
-      this.available = true
-    }
-  }
 }
 
 export { Car }

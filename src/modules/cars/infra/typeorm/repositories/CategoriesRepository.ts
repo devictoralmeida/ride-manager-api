@@ -16,7 +16,6 @@ export class CategoriesRepository implements ICategoriesRepository {
   async create({ name, description }: ICreateCategoryDTO): Promise<Category> {
     const category = this.repository.create({ name, description })
     await this.repository.save(category)
-    console.log(category)
     return category
   }
 

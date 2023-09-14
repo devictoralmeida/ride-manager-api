@@ -9,7 +9,7 @@
     "typeorm": "typeorm-ts-node-commonjs -r tsconfig-paths/register",
     "typeorm:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source",
     "typeorm:run": "typeorm-ts-node-commonjs migration:run -d src/data-source",
-    "test": "jest"
+    "test": "jest --verbose --runInBand"
   },
   "keywords": [],
   "author": "",

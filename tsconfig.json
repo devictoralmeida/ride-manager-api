@@ -18,9 +18,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "strict": true,
-    "exactOptionalPropertyTypes": true,
-    "strictPropertyInitialization": false
+    "emitDecoratorMetadata": true
   }
 }

@@ -6,4 +6,5 @@ export interface ICreateCarDTO {
   brand: string
   license_plate: string
   category_id: string
+  available?: boolean
 }

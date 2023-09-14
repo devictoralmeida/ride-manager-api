@@ -11,7 +11,7 @@ describe('Create Car', () => {
     createCarUseCase = new CreateCarUseCase(inMemoryCarsRepository)
   })
 
-  it('should be able to create a car', async () => {
+  it('should be able to create a new available car', async () => {
     const car = await createCarUseCase.execute({
       brand: 'Brand',
       daily_rate: 100,
@@ -22,44 +22,45 @@ describe('Create Car', () => {
       category_id: 'category',
     })
 
-    expect(car).toHaveProperty('id')
-  })
-
-  it('should NOT be able to create a car with existing license plate', () => {
-    expect(async () => {
-      await createCarUseCase.execute({
-        brand: 'Brand',
-        daily_rate: 100,
-        description: 'Description Car',
-        fine_amount: 60,
-        license_plate: 'ABC-1234',
-        name: 'Car1',
-        category_id: 'category',
-      })
-
-      await createCarUseCase.execute({
-        brand: 'Brand',
-        daily_rate: 100,
-        description: 'Description Car',
-        fine_amount: 60,
-        license_plate: 'ABC-1234',
-        name: 'Car2',
-        category_id: 'category',
-      })
-    }).rejects.toBeInstanceOf(AppError)
-  })
-
-  it('should be able to create a car with available true by default', async () => {
-    const car = await createCarUseCase.execute({
+    const expectedResult = {
+      id: expect.any(String),
       brand: 'Brand',
       daily_rate: 100,
       description: 'Description Car',
       fine_amount: 60,
-      license_plate: 'ABCD-1234',
-      name: 'Car Available',
+      license_plate: 'ABC-1234',
+      name: 'Name Car',
+      category_id: 'category',
+      available: true,
+      created_at: expect.any(Date),
+    }
+
+    expect(car).toStrictEqual(expect.objectContaining(expectedResult))
+    expect(car.available).toBe(true)
+  })
+
+  it('should NOT be able to create a car with existing license plate', async () => {
+    await createCarUseCase.execute({
+      brand: 'Brand',
+      daily_rate: 100,
+      description: 'Description Car',
+      fine_amount: 60,
+      license_plate: 'ABC-1234',
+      name: 'Car1',
       category_id: 'category',
     })
 
-    expect(car.available).toBe(true)
+    const result = createCarUseCase.execute({
+      brand: 'Brand',
+      daily_rate: 100,
+      description: 'Description Car',
+      fine_amount: 60,
+      license_plate: 'ABC-1234',
+      name: 'Car1',
+      category_id: 'category',
+    })
+
+    await expect(result).rejects.toThrowError(AppError)
+    await expect(result).rejects.toThrow('Car already exists!')
   })
 })
