@@ -3,6 +3,7 @@ import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO'
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository'
 import { Car } from '../entities/Car'
 import { AppDataSource } from 'data-source'
+import { v4 as uuidV4 } from 'uuid'
 
 export class CarsRepository implements ICarsRepository {
   private repository: Repository<Car>
@@ -19,7 +20,10 @@ export class CarsRepository implements ICarsRepository {
     license_plate,
     name,
     category_id,
+    specifications,
+    id,
   }: ICreateCarDTO): Promise<Car> {
+    console.log('id 1: ', id)
     const car = this.repository.create({
       brand,
       daily_rate,
@@ -28,7 +32,11 @@ export class CarsRepository implements ICarsRepository {
       license_plate,
       name,
       category_id,
+      specifications,
+      id: id ?? uuidV4(),
     })
+
+    console.log('id 2: ', id)
 
     await this.repository.save(car)
 
@@ -38,6 +46,18 @@ export class CarsRepository implements ICarsRepository {
   async findByLicensePlate(license_plate: string): Promise<Car | void> {
     const car = await this.repository.findOneBy({
       license_plate,
+    })
+
+    if (!car) {
+      return
+    }
+
+    return car
+  }
+
+  async findById(id: string): Promise<Car | void> {
+    const car = await this.repository.findOneBy({
+      id,
     })
 
     if (!car) {

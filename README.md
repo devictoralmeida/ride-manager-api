@@ -28,8 +28,6 @@
 **Requisitos Funcionais**
 
 - Deve ser possível cadastrar uma especificação para um carro.
-- Deve ser possível listar todas as especificações.
-- Deve ser possível listar todos os carros.
 
 **Regras De Negócio**
 
@@ -42,7 +40,6 @@
 **Requisitos Funcionais**
 
 - Deve ser possível cadastrar a imagem para um carro.
-- Deve ser possível listar todos os carros (disponívels ou não).
 
 **Requisitos Não Funcionais**
 
@@ -69,3 +66,4 @@
 - O aluguel deve ter duração mínima de 24 horas.
 - Não deve ser possível cadastrar um novo aluguel caso já exista um aberto para o mesmo usuário.
 - Não deve ser possível cadastrar um novo aluguel caso já exista um aberto para o mesmo carro.
+- O usuário deve estar logado na aplicação

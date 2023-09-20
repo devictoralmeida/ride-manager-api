@@ -2,35 +2,32 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import { Car } from './Car'
 import { v4 as uuidV4 } from 'uuid'
 
-@Entity('users')
-class User {
+@Entity('cars_image')
+class CarImage {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
-  name: string
+  @Column({ type: 'uuid' })
+  car_id: string
 
   @Column()
-  email: string
-
-  @Column()
-  password: string
-
-  @Column()
-  driver_license: string
-
-  @Column({ default: false })
-  isAdmin: boolean
-
-  @Column({ type: 'varchar', nullable: true })
-  avatar: string
+  image_name: string
 
   @CreateDateColumn()
   created_at: Date
+
+  @ManyToOne(() => Car)
+  @JoinColumn({
+    name: 'car_id',
+  })
+  car: Car
 
   constructor() {
     if (!this.id) {
@@ -39,4 +36,4 @@ class User {
   }
 }
 
-export { User }
+export { CarImage }

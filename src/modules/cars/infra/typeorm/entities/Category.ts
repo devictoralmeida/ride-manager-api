@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { Car } from './Car'
+import { v4 as uuidV4 } from 'uuid'
 
 @Entity('categories')
 class Category {
@@ -23,6 +24,12 @@ class Category {
 
   @OneToMany(() => Car, (car) => car.category_id)
   cars: Car[]
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuidV4()
+    }
+  }
 }
 
 export { Category }

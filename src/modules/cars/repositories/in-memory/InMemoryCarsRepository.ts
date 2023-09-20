@@ -15,11 +15,12 @@ export class InMemoryCarsRepository implements ICarsRepository {
     name,
     category_id,
     available,
+    id,
   }: ICreateCarDTO): Promise<Car> {
     const car = new Car()
 
     Object.assign(car, {
-      id: uuidV4(),
+      id: id ?? uuidV4(),
       created_at: new Date(),
       available: available ?? true,
       brand,
@@ -37,6 +38,10 @@ export class InMemoryCarsRepository implements ICarsRepository {
 
   async findByLicensePlate(license_plate: string): Promise<Car | void> {
     return this.cars.find((car) => car.license_plate === license_plate)
+  }
+
+  async findById(id: string): Promise<Car | void> {
+    return this.cars.find((car) => car.id === id)
   }
 
   async findAvailable(

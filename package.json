@@ -6,9 +6,11 @@
     "lint": "eslint src --ext .ts --fix",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "dev": "ts-node-dev --rs -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
-    "typeorm": "typeorm-ts-node-commonjs -r tsconfig-paths/register",
+    "typeorm": "typeorm-ts-node-commonjs tsconfig-paths/register",
+    "typeorm:create": "typeorm-ts-node-commonjs migration:create ./src/shared/infra/typeorm/migrations/",
     "typeorm:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source",
     "typeorm:run": "typeorm-ts-node-commonjs migration:run -d src/data-source",
+    "typeorm:revert": "typeorm-ts-node-commonjs migration:revert -d src/data-source",
     "test": "jest --verbose --runInBand",
     "seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
   },
@@ -18,6 +20,7 @@
   "dependencies": {
     "bcryptjs": "2.4.3",
     "csv-parse": "5.5.0",
+    "dayjs": "1.11.10",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",

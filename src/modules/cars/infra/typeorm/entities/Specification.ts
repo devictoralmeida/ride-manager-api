@@ -4,6 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import { v4 as uuidV4 } from 'uuid'
 
 @Entity('specifications')
 class Specification {
@@ -18,6 +19,12 @@ class Specification {
 
   @CreateDateColumn()
   created_at: Date
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuidV4()
+    }
+  }
 }
 
 export { Specification }
