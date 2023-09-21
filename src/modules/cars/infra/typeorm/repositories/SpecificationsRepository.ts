@@ -3,7 +3,7 @@ import {
   ISpecificationRepository,
   ICreateSpecificationDTO,
 } from '@modules/cars/repositories/ISpecificationsRepository'
-import { AppDataSource } from 'data-source'
+import { AppDataSource } from '../../../../../data-source'
 import { Specification } from '../entities/Specification'
 
 export class SpecificationsRepository implements ISpecificationRepository {
@@ -17,7 +17,6 @@ export class SpecificationsRepository implements ISpecificationRepository {
     const specifications = await this.repository.find({
       where: { id: In(ids) },
     })
-    console.log(specifications)
     return specifications
   }
 

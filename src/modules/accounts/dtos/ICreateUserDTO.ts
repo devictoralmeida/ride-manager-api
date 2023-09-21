@@ -5,4 +5,5 @@ export interface ICreateUserDTO {
   driver_license: string
   isAdmin?: boolean
   avatar?: string
+  id?: string
 }

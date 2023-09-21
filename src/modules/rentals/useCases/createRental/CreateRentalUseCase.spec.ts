@@ -53,13 +53,13 @@ describe('Create Rental', () => {
   it('should NOT be able to create a new rental if there is another open to the same car', async () => {
     await createRentalUseCase.execute({
       user_id: '12347',
-      car_id: '121212',
+      car_id: '12',
       expected_return_date: addOneDay,
     })
 
     const rental = createRentalUseCase.execute({
       user_id: '12348',
-      car_id: '121212',
+      car_id: '12',
       expected_return_date: addOneDay,
     })
 

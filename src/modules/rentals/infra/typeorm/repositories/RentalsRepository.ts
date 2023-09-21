@@ -1,4 +1,4 @@
-import { AppDataSource } from 'data-source'
+import { AppDataSource } from '../../../../../data-source'
 import { Repository } from 'typeorm'
 import { ICreateRentalDTO } from '@modules/rentals/dtos/ICreateRentalDTO'
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository'

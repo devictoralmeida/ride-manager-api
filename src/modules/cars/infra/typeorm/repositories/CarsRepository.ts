@@ -2,8 +2,8 @@ import { Repository } from 'typeorm'
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO'
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository'
 import { Car } from '../entities/Car'
-import { AppDataSource } from 'data-source'
 import { v4 as uuidV4 } from 'uuid'
+import { AppDataSource } from 'src/data-source'
 
 export class CarsRepository implements ICarsRepository {
   private repository: Repository<Car>
@@ -23,7 +23,6 @@ export class CarsRepository implements ICarsRepository {
     specifications,
     id,
   }: ICreateCarDTO): Promise<Car> {
-    console.log('id 1: ', id)
     const car = this.repository.create({
       brand,
       daily_rate,
@@ -35,8 +34,6 @@ export class CarsRepository implements ICarsRepository {
       specifications,
       id: id ?? uuidV4(),
     })
-
-    console.log('id 2: ', id)
 
     await this.repository.save(car)
 

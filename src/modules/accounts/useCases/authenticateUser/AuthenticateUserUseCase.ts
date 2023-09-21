@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'dotenv/config'
+import 'reflect-metadata'
 import { injectable, inject } from 'tsyringe'
 import { compareSync } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'

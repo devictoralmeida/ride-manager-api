@@ -22,7 +22,6 @@ export class Rental {
   user_id: string
 
   @Column({
-    type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP',
   })
   start_date: Date
