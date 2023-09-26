@@ -52,7 +52,7 @@ export class CarsRepository implements ICarsRepository {
     return car
   }
 
-  async findById(id: string): Promise<Car | void> {
+  async findById(id: string): Promise<Car> {
     const car = await this.repository.findOneBy({
       id,
     })
@@ -87,5 +87,15 @@ export class CarsRepository implements ICarsRepository {
 
     const cars = await carsQuery.getMany()
     return cars
+  }
+
+  async updateAvailable(id: string, available: boolean): Promise<void> {
+    const car = await this.repository
+      .createQueryBuilder()
+      .update()
+      .set({ available })
+      .where('id = :id')
+      .setParameters({ id })
+      .execute()
   }
 }

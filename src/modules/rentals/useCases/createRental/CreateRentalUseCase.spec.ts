@@ -1,3 +1,4 @@
+import { InMemoryCarsRepository } from '@modules/cars/repositories/in-memory/InMemoryCarsRepository'
 import dayjs from 'dayjs'
 import AppError from '@shared/errors/AppError'
 import { InMemoryRentalsRepository } from './../../repositories/in-memory/InMemoryRentalsRepository'
@@ -7,6 +8,7 @@ import { DayjsDateProvider } from '@shared/container/providers/DateProvider/impl
 let createRentalUseCase: CreateRentalUseCase
 let inMemoryRentalsRepository: InMemoryRentalsRepository
 let dayjsDateProvider: DayjsDateProvider
+let inMemoryCarsRepository: InMemoryCarsRepository
 
 describe('Create Rental', () => {
   const addOneDay = dayjs().add(1, 'day').toDate()
@@ -14,28 +16,42 @@ describe('Create Rental', () => {
   beforeEach(() => {
     inMemoryRentalsRepository = new InMemoryRentalsRepository()
     dayjsDateProvider = new DayjsDateProvider()
+    inMemoryCarsRepository = new InMemoryCarsRepository()
+
     createRentalUseCase = new CreateRentalUseCase(
       inMemoryRentalsRepository,
       dayjsDateProvider,
+      inMemoryCarsRepository,
     )
   })
 
   it('should be able to create a new Rental', async () => {
+    const car = await inMemoryCarsRepository.create({
+      name: 'Test',
+      brand: 'Brand test',
+      category_id: '1234',
+      daily_rate: 50,
+      description: 'Car test',
+      fine_amount: 50,
+      license_plate: 'TEST-123',
+    })
+
     const rental = await createRentalUseCase.execute({
       user_id: '12345',
-      car_id: '121212',
+      car_id: car.id,
       expected_return_date: addOneDay,
     })
 
     expect(rental).toHaveProperty('id')
     expect(rental).toHaveProperty('start_date')
+    expect(car).toHaveProperty('available', false)
   })
 
   it('should NOT be able to create a new Rental if there is another open to the same user', async () => {
-    await createRentalUseCase.execute({
-      user_id: '12346',
+    await inMemoryRentalsRepository.create({
       car_id: '121210',
       expected_return_date: addOneDay,
+      user_id: '12346',
     })
 
     const rental = createRentalUseCase.execute({
@@ -51,15 +67,15 @@ describe('Create Rental', () => {
   })
 
   it('should NOT be able to create a new rental if there is another open to the same car', async () => {
-    await createRentalUseCase.execute({
-      user_id: '12347',
-      car_id: '12',
+    await inMemoryRentalsRepository.create({
+      car_id: '121219',
       expected_return_date: addOneDay,
+      user_id: '12349',
     })
 
     const rental = createRentalUseCase.execute({
-      user_id: '12348',
-      car_id: '12',
+      user_id: '12399',
+      car_id: '121219',
       expected_return_date: addOneDay,
     })
 

@@ -17,7 +17,7 @@ describe('Create Car', () => {
       daily_rate: 100,
       description: 'Description Car',
       fine_amount: 60,
-      license_plate: 'ABC-1234',
+      license_plate: 'ABCZAD-1234',
       name: 'Name Car',
       category_id: 'category',
     })
@@ -28,7 +28,7 @@ describe('Create Car', () => {
       daily_rate: 100,
       description: 'Description Car',
       fine_amount: 60,
-      license_plate: 'ABC-1234',
+      license_plate: 'ABCZAD-1234',
       name: 'Name Car',
       category_id: 'category',
       available: true,
@@ -61,6 +61,6 @@ describe('Create Car', () => {
     })
 
     await expect(result).rejects.toThrowError(AppError)
-    await expect(result).rejects.toThrow('Car already exists!')
+    await expect(result).rejects.toThrow('Car already exists')
   })
 })

@@ -11,7 +11,7 @@
     "typeorm:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source",
     "typeorm:run": "typeorm-ts-node-commonjs migration:run -d src/data-source",
     "typeorm:revert": "typeorm-ts-node-commonjs migration:revert -d src/data-source",
-    "test": "jest --verbose --runInBand",
+    "test": "jest --verbose --runInBand --detectOpenHandles",
     "seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
   },
   "keywords": [],
