@@ -6,10 +6,14 @@ import { InMemoryUsersRepository } from '@modules/accounts/repositories/in-memor
 import { CreateUserUseCase } from '../createUser/CreateUserUseCase'
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase'
 import { JwtPayload, decode } from 'jsonwebtoken'
+import { InMemoryUsersTokensRepository } from '@modules/accounts/repositories/in-memory/InMemoryUsersTokensRepository'
+import { DayjsDateProvider } from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let authenticateUserUseCase: AuthenticateUserUseCase
 let createUserUseCase: CreateUserUseCase
+let inMemoryUsersTokensRepository: InMemoryUsersTokensRepository
+let dateProvider: DayjsDateProvider
 
 describe('Authenticate User', () => {
   beforeAll(() => {
@@ -18,9 +22,12 @@ describe('Authenticate User', () => {
 
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
-
+    inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository()
+    dateProvider = new DayjsDateProvider()
     authenticateUserUseCase = new AuthenticateUserUseCase(
       inMemoryUsersRepository,
+      inMemoryUsersTokensRepository,
+      dateProvider,
     )
 
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository)
@@ -60,7 +67,7 @@ describe('Authenticate User', () => {
     const timeStampDiff = Math.abs(expiration - issuedAt)
     const hoursDiff = timeStampDiff / 3600
 
-    expect(hoursDiff).toStrictEqual(24)
+    expect(hoursDiff).toStrictEqual(0.25)
   })
 
   it('should NOT be able to authenticate an nonexistent user', async () => {
