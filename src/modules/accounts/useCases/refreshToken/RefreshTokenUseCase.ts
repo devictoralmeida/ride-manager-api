@@ -11,6 +11,11 @@ interface IPayload {
   email: string
 }
 
+interface ITokenResponse {
+  token: string
+  refresh_token: string
+}
+
 @injectable()
 export class RefreshTokenUseCase {
   constructor(
@@ -21,10 +26,10 @@ export class RefreshTokenUseCase {
     private dateProvider: IDateProvider,
   ) {}
 
-  async execute(token: string): Promise<string> {
+  async execute(token: string): Promise<ITokenResponse> {
     const { sub, email } = verify(
       token,
-      process.env.REFRESH_SECRET_KEY!.toString(),
+      process.env.REFRESH_SECRET_KEY.toString(),
     ) as IPayload
 
     const user_id = sub
@@ -42,16 +47,15 @@ export class RefreshTokenUseCase {
 
     const refresh_token: string = sign(
       { email },
-      process.env.REFRESH_SECRET_KEY!.toString(),
+      process.env.REFRESH_SECRET_KEY.toString(),
       {
-        expiresIn: process.env.REFRESH_EXPIRES_IN!.toString(),
+        expiresIn: process.env.REFRESH_EXPIRES_IN.toString(),
         subject: user_id,
       },
     )
 
-    const expires_date: string = process.env
-      .REFRESH_EXPIRES_IN!.toString()
-      .replace(/[^\d]+/g, '')
+    const expires_date: string =
+      process.env.REFRESH_EXPIRES_IN.toString().replace(/[^\d]+/g, '')
 
     const expires_date_formatted: Date = this.dateProvider.addDays(
       parseInt(expires_date),
@@ -63,6 +67,11 @@ export class RefreshTokenUseCase {
       refresh_token,
     })
 
-    return refresh_token
+    const newToken: string = sign({}, process.env.SECRET_KEY.toString(), {
+      expiresIn: process.env.EXPIRES_IN.toString(),
+      subject: user_id,
+    })
+
+    return { refresh_token, token: newToken }
   }
 }

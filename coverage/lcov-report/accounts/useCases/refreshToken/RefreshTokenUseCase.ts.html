@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.94% </span>
+                <span class="strong">31.16% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/68</span>
+                <span class='fraction'>24/77</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.94% </span>
+                <span class="strong">31.16% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/68</span>
+                <span class='fraction'>24/77</span>
             </div>
         
             
@@ -131,7 +131,21 @@
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -155,6 +169,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -212,6 +230,11 @@ interface IPayload {
   email: string
 }
 &nbsp;
+interface ITokenResponse {
+  token: string
+  refresh_token: string
+}
+&nbsp;
 @injectable()
 export class RefreshTokenUseCase {
 <span class="fstat-no" title="function not covered" >  constructor(</span>
@@ -222,10 +245,10 @@ export class RefreshTokenUseCase {
 <span class="cstat-no" title="statement not covered" >    private dateProvider: IDateProvider,</span>
 <span class="cstat-no" title="statement not covered" >  ) {}</span>
 &nbsp;
-<span class="fstat-no" title="function not covered" >  async execute(token: string): Promise&lt;string&gt; {</span>
+<span class="fstat-no" title="function not covered" >  async execute(token: string): Promise&lt;ITokenResponse&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    const { sub, email } = verify(</span>
 <span class="cstat-no" title="statement not covered" >      token,</span>
-<span class="cstat-no" title="statement not covered" >      process.env.REFRESH_SECRET_KEY!.toString(),</span>
+<span class="cstat-no" title="statement not covered" >      process.env.REFRESH_SECRET_KEY.toString(),</span>
 <span class="cstat-no" title="statement not covered" >    ) as IPayload</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const user_id = sub</span>
@@ -243,16 +266,15 @@ export class RefreshTokenUseCase {
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const refresh_token: string = sign(</span>
 <span class="cstat-no" title="statement not covered" >      { email },</span>
-<span class="cstat-no" title="statement not covered" >      process.env.REFRESH_SECRET_KEY!.toString(),</span>
+<span class="cstat-no" title="statement not covered" >      process.env.REFRESH_SECRET_KEY.toString(),</span>
 <span class="cstat-no" title="statement not covered" >      {</span>
-<span class="cstat-no" title="statement not covered" >        expiresIn: process.env.REFRESH_EXPIRES_IN!.toString(),</span>
+<span class="cstat-no" title="statement not covered" >        expiresIn: process.env.REFRESH_EXPIRES_IN.toString(),</span>
 <span class="cstat-no" title="statement not covered" >        subject: user_id,</span>
 <span class="cstat-no" title="statement not covered" >      },</span>
 <span class="cstat-no" title="statement not covered" >    )</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const expires_date: string = process.env</span>
-<span class="cstat-no" title="statement not covered" >      .REFRESH_EXPIRES_IN!.toString()</span>
-<span class="cstat-no" title="statement not covered" >      .replace(/[^\d]+/g, '')</span>
+<span class="cstat-no" title="statement not covered" >    const expires_date: string =</span>
+<span class="cstat-no" title="statement not covered" >      process.env.REFRESH_EXPIRES_IN.toString().replace(/[^\d]+/g, '')</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const expires_date_formatted: Date = this.dateProvider.addDays(</span>
 <span class="cstat-no" title="statement not covered" >      parseInt(expires_date),</span>
@@ -264,7 +286,12 @@ export class RefreshTokenUseCase {
 <span class="cstat-no" title="statement not covered" >      refresh_token,</span>
 <span class="cstat-no" title="statement not covered" >    })</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    return refresh_token</span>
+<span class="cstat-no" title="statement not covered" >    const newToken: string = sign({}, process.env.SECRET_KEY.toString(), {</span>
+<span class="cstat-no" title="statement not covered" >      expiresIn: process.env.EXPIRES_IN.toString(),</span>
+<span class="cstat-no" title="statement not covered" >      subject: user_id,</span>
+<span class="cstat-no" title="statement not covered" >    })</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    return { refresh_token, token: newToken }</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -274,7 +301,7 @@ export class RefreshTokenUseCase {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-09-27T19:57:27.415Z
+                at 2023-09-27T21:54:49.688Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

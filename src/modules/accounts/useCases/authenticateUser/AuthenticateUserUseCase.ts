@@ -50,25 +50,26 @@ export class AuthenticateUserUseCase {
 
     const token: string = sign(
       { admin: user.isAdmin },
-      process.env.SECRET_KEY!.toString(),
+      process.env.SECRET_KEY.toString(),
       {
-        expiresIn: process.env.EXPIRES_IN!.toString(),
+        expiresIn: process.env.EXPIRES_IN.toString(),
         subject: user.id,
       },
     )
 
     const refresh_token: string = sign(
       { email: user.email },
-      process.env.REFRESH_SECRET_KEY!.toString(),
+      process.env.REFRESH_SECRET_KEY.toString(),
       {
-        expiresIn: process.env.REFRESH_EXPIRES_IN!.toString(),
+        expiresIn: process.env.REFRESH_EXPIRES_IN.toString(),
         subject: user.id,
       },
     )
 
-    const expires_date = process.env
-      .REFRESH_EXPIRES_IN!.toString()
-      .replace(/[^\d]+/g, '')
+    const expires_date = process.env.REFRESH_EXPIRES_IN.toString().replace(
+      /[^\d]+/g,
+      '',
+    )
 
     const expires_date_formatted = this.dateProvider.addDays(
       parseInt(expires_date),
