@@ -3,6 +3,7 @@ import {
   ICategoriesRepository,
   ICreateCategoryDTO,
 } from '../ICategoriesRepository'
+import { v4 as uuidV4 } from 'uuid'
 
 export class InMemoryCategoriesRepository implements ICategoriesRepository {
   categories: Category[] = []
@@ -25,9 +26,11 @@ export class InMemoryCategoriesRepository implements ICategoriesRepository {
   }
 
   async create({ name, description }: ICreateCategoryDTO): Promise<Category> {
-    const newCategory = new Category() // Aqui gera o id devido ao construtor da entity
+    const newCategory = new Category()
 
     Object.assign(newCategory, {
+      id: uuidV4(),
+      created_at: new Date(),
       name,
       description,
     })

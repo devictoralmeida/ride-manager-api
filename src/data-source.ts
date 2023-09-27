@@ -10,7 +10,7 @@ const settings = (): DataSourceOptions => {
       type: 'sqlite',
       database: ':memory:',
       synchronize: true,
-      entities: ['src/modules/**/entities/*.{ts,js}'],
+      entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
     }
   }
 

@@ -1,6 +1,7 @@
 import { ICreateUserDTO } from '@modules/accounts/dtos/ICreateUserDTO'
 import { User } from '@modules/accounts/infra/typeorm/entities/User'
 import { IUsersRepository } from '../IUsersRepository'
+import { v4 as uuidV4 } from 'uuid'
 
 export class InMemoryUsersRepository implements IUsersRepository {
   users: User[] = []
@@ -10,14 +11,18 @@ export class InMemoryUsersRepository implements IUsersRepository {
     email,
     name,
     password,
+    isAdmin,
   }: ICreateUserDTO): Promise<User> {
     const newUser = new User()
 
     Object.assign(newUser, {
+      id: uuidV4(),
+      created_at: new Date(),
       driver_license,
       email,
       name,
       password,
+      isAdmin: isAdmin ?? false,
     })
 
     this.users.push(newUser)

@@ -1,7 +1,8 @@
+import 'reflect-metadata'
+import { inject, injectable } from 'tsyringe'
 import { Car } from '@modules/cars/infra/typeorm/entities/Car'
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository'
 import AppError from '@shared/errors/AppError'
-import { inject, injectable } from 'tsyringe'
 
 interface IRequest {
   name: string
@@ -33,7 +34,7 @@ export class CreateCarUseCase {
       await this.carsRepository.findByLicensePlate(license_plate)
 
     if (carAlreadyExists) {
-      throw new AppError('Car already exists!')
+      throw new AppError('Car already exists', 409)
     }
 
     const car = await this.carsRepository.create({

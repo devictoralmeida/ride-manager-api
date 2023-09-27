@@ -2,9 +2,9 @@ import {
   ICategoriesRepository,
   ICreateCategoryDTO,
 } from '@modules/cars/repositories/ICategoriesRepository'
-import { AppDataSource } from 'data-source'
 import { Repository } from 'typeorm'
 import { Category } from '../entities/Category'
+import { AppDataSource } from 'src/data-source'
 
 export class CategoriesRepository implements ICategoriesRepository {
   private repository: Repository<Category> // Assim só teremos acesso aos métodos do typeORM aqui dentro
@@ -16,7 +16,6 @@ export class CategoriesRepository implements ICategoriesRepository {
   async create({ name, description }: ICreateCategoryDTO): Promise<Category> {
     const category = this.repository.create({ name, description })
     await this.repository.save(category)
-    console.log(category)
     return category
   }
 
@@ -26,12 +25,7 @@ export class CategoriesRepository implements ICategoriesRepository {
   }
 
   async findByName(name: string): Promise<Category | void> {
-    const category: Category | null = await this.repository.findOneBy({ name })
-
-    if (category === null) {
-      return
-    } else {
-      return category
-    }
+    const category = await this.repository.findOneBy({ name })
+    return category
   }
 }

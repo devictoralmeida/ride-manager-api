@@ -3,15 +3,18 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm'
-import { v4 as uuidV4 } from 'uuid'
 import { Category } from './Category'
+import { Specification } from './Specification'
+import { v4 as uuidV4 } from 'uuid'
 
 @Entity('cars')
 class Car {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column()
@@ -23,7 +26,7 @@ class Car {
   @Column()
   daily_rate: number
 
-  @Column()
+  @Column({ default: true })
   available: boolean
 
   @Column()
@@ -39,11 +42,21 @@ class Car {
   created_at: Date
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
+  @JoinColumn({
+    name: 'category_id',
+  })
   category: Category
 
-  @Column()
+  @Column({ type: 'uuid', nullable: true })
   category_id: string
+
+  @ManyToMany(() => Specification)
+  @JoinTable({
+    name: 'specifications_cars',
+    joinColumns: [{ name: 'car_id' }],
+    inverseJoinColumns: [{ name: 'specification_id' }],
+  })
+  specifications: Specification[]
 
   constructor() {
     if (!this.id) {

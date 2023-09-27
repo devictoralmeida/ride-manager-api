@@ -1,9 +1,14 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 import { v4 as uuidV4 } from 'uuid'
 
 @Entity('users')
 class User {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column()
@@ -18,10 +23,10 @@ class User {
   @Column()
   driver_license: string
 
-  @Column()
+  @Column({ default: false })
   isAdmin: boolean
 
-  @Column()
+  @Column({ type: 'varchar', nullable: true })
   avatar: string
 
   @CreateDateColumn()
