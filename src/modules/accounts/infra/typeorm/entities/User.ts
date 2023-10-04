@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import {
   Column,
   CreateDateColumn,
@@ -5,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { v4 as uuidV4 } from 'uuid'
+import { Expose } from 'class-transformer'
 
 @Entity('users')
 class User {
@@ -31,6 +33,18 @@ class User {
 
   @CreateDateColumn()
   created_at: Date
+
+  @Expose({ name: 'avatar_url' })
+  avatar_url(): string {
+    switch (process.env.DISK) {
+      case 'local':
+        return `${process.env.APP_API_URL}/avatar/${this.avatar}`
+      case 's3':
+        return `${process.env.AWS_BUCKET_BASE_URL}/avatar/${this.avatar}`
+      default:
+        return null
+    }
+  }
 
   constructor() {
     if (!this.id) {

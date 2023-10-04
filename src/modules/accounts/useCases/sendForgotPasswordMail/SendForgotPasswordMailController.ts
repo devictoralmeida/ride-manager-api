@@ -9,7 +9,7 @@ export class SendForgotPasswordMailController {
       SendForgotPasswordMailUseCase,
     )
 
-    sendForgotPasswordMailUseCase.execute(email)
+    await sendForgotPasswordMailUseCase.execute(email)
     return response.status(200).json()
   }
 }

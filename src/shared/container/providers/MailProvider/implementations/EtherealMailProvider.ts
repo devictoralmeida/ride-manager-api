@@ -40,13 +40,10 @@ export class EtherealMailProvider implements IMailProvider {
     const templateHTML = templateParse(variables)
 
     const message = await this.client.sendMail({
-      to,
       from: 'Rentx <noreply@rentx.com.br>',
+      to,
       subject,
       html: templateHTML,
     })
-
-    console.log('Message sent: %s', message.messageId)
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message))
   }
 }
