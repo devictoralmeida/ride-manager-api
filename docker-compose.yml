@@ -6,10 +6,10 @@ services:
         restart: always
         image: postgres
         ports:
-            - 5432:5432
+            - 6869:5432
         environment:
             - POSTGRES_USER=docker
-            - POSTGRES_PASSWORD=docker
+            - POSTGRES_PASSWORD=258794613
             - POSTGRES_DB=rentx
         volumes:
             - pgdata:/var/lib/postgresql/data

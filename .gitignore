@@ -5,6 +5,8 @@ node_modules
 .eslint
 .eslintignore
 .npmrc
+dist
+build
 tmp/*
 !tmp/.gitkeep
 coverage

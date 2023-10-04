@@ -10,20 +10,20 @@ const settings = (): DataSourceOptions => {
       type: 'sqlite',
       database: ':memory:',
       synchronize: true,
-      entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
+      entities: ['./src/modules/**/infra/typeorm/entities/*.{ts,js}'],
     }
   }
 
   return {
     type: 'postgres',
-    host: process.env.PGHOST || 'localhost',
-    port: 5432,
+    host: 'localhost' || process.env.PGHOST,
+    port: 6869,
     username: 'docker',
-    password: 'docker',
+    password: '258794613',
     database: 'rentx',
     logging: true,
-    migrations: ['./src/shared/infra/typeorm/migrations/*.ts'],
-    entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
+    migrations: ['./src/shared/infra/typeorm/migrations/*.{ts,js}'],
+    entities: ['./src/modules/**/infra/typeorm/entities/*.{ts,js}'],
   }
 }
 
