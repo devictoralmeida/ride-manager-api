@@ -6,6 +6,7 @@
     "lint": "eslint src --ext .ts --fix",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "dev": "ts-node-dev --rs -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
+    "dev:prod": "node ./dist/shared/infra/http/server.js",
     "typeorm": "typeorm-ts-node-commonjs tsconfig-paths/register",
     "typeorm:create": "typeorm-ts-node-commonjs migration:create ./src/shared/infra/typeorm/migrations/",
     "typeorm:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source",

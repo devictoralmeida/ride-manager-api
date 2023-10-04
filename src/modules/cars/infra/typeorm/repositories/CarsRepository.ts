@@ -3,7 +3,7 @@ import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO'
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository'
 import { Car } from '../entities/Car'
 import { v4 as uuidV4 } from 'uuid'
-import { AppDataSource } from 'src/data-source'
+import { AppDataSource } from 'data-source'
 
 export class CarsRepository implements ICarsRepository {
   private repository: Repository<Car>

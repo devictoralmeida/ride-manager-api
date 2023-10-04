@@ -16,7 +16,7 @@ const settings = (): DataSourceOptions => {
 
   return {
     type: 'postgres',
-    host: process.env.PGHOST || 'localhost',
+    host: 'localhost' || process.env.PGHOST,
     port: 5432,
     username: 'docker',
     password: 'docker',
