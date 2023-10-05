@@ -4,7 +4,7 @@ import {
 } from '@modules/cars/repositories/ICategoriesRepository'
 import { Repository } from 'typeorm'
 import { Category } from '../entities/Category'
-import { AppDataSource } from 'data-source'
+import { AppDataSource } from '../../../../../data-source'
 
 export class CategoriesRepository implements ICategoriesRepository {
   private repository: Repository<Category> // Assim só teremos acesso aos métodos do typeORM aqui dentro
