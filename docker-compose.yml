@@ -6,7 +6,7 @@ services:
         restart: always
         image: postgres
         ports:
-            - 6869:5432
+            - 6869::5432
         environment:
             - POSTGRES_USER=docker
             - POSTGRES_PASSWORD=258794613
