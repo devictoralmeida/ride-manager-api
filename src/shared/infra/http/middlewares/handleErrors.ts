@@ -1,5 +1,5 @@
-import AppError from "@shared/errors/AppError";
-import { NextFunction, Request, Response } from "express";
+import AppError from '@shared/errors/AppError'
+import { NextFunction, Request, Response } from 'express'
 
 export const handleErrors = (
   err: Error,
@@ -8,11 +8,11 @@ export const handleErrors = (
   next: NextFunction,
 ): Response => {
   if (err instanceof AppError) {
-    return response.status(err.statusCode).json({ message: err.message });
+    return response.status(err.statusCode).json({ message: err.message })
   }
 
-  console.error(err);
+  console.error(err)
   return response
     .status(500)
-    .json({ message: `Internal server error - ${err.message}` });
-};
+    .json({ message: `Internal server error - ${err.message}` })
+}

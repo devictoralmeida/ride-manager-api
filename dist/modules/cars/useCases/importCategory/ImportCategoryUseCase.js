@@ -12,7 +12,7 @@ var _ICategoriesRepository = require("../../repositories/ICategoriesRepository")
 var _dec, _dec2, _dec3, _dec4, _class;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 let ImportCategoryUseCase = exports.ImportCategoryUseCase = (_dec = (0, _tsyringe.injectable)(), _dec2 = function (target, key) {
-  return (0, _tsyringe.inject)("CategoriesRepository")(target, undefined, 0);
+  return (0, _tsyringe.inject)('CategoriesRepository')(target, undefined, 0);
 }, _dec3 = Reflect.metadata("design:type", Function), _dec4 = Reflect.metadata("design:paramtypes", [typeof _ICategoriesRepository.ICategoriesRepository === "undefined" ? Object : _ICategoriesRepository.ICategoriesRepository]), _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = class ImportCategoryUseCase {
   constructor(categoriesRepository) {
     this.categoriesRepository = categoriesRepository;
@@ -26,16 +26,16 @@ let ImportCategoryUseCase = exports.ImportCategoryUseCase = (_dec = (0, _tsyring
 
       stream.pipe(parseFile); // A cada chunk lido o pipe irá envia-lo para a lib parseFile.
 
-      parseFile.on("data", async line => {
+      parseFile.on('data', async line => {
         const [name, description] = line;
         categories.push({
           name,
           description
         });
-      }).on("end", () => {
+      }).on('end', () => {
         _fs.default.promises.unlink(file.path); // Removendo o arquivo que ficaria na pasta temporária
         resolve(categories);
-      }).on("error", err => {
+      }).on('error', err => {
         reject(err);
       });
     });
@@ -49,7 +49,7 @@ let ImportCategoryUseCase = exports.ImportCategoryUseCase = (_dec = (0, _tsyring
       } = category;
       const categoryAlreadyExists = await this.categoriesRepository.findByName(name);
       if (categoryAlreadyExists) {
-        throw new _AppError.default("Category already exists!", 409);
+        throw new _AppError.default('Category already exists!', 409);
       }
       await this.categoriesRepository.create({
         name,

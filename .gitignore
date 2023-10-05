@@ -5,8 +5,9 @@ node_modules
 .eslint
 .eslintignore
 .npmrc
-# dist
-# build
+dist
+build
+package-lock.json
 tmp/*
 !tmp/.gitkeep
 coverage
