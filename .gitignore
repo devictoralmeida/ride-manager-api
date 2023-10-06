@@ -7,7 +7,6 @@ node_modules
 .npmrc
 dist
 build
-package-lock.json
 tmp/*
 !tmp/.gitkeep
 coverage

@@ -10,7 +10,7 @@ const settings = (): DataSourceOptions => {
       type: 'sqlite',
       database: ':memory:',
       synchronize: true,
-      entities: ['./dist/modules/**/infra/typeorm/entities/*.{ts,js}'],
+      entities: ['./src/modules/**/infra/typeorm/entities/*.{ts,js}'],
     }
   }
 
@@ -22,8 +22,8 @@ const settings = (): DataSourceOptions => {
     password: '258794613',
     database: 'rentx',
     logging: true,
-    migrations: ['./dist/shared/infra/typeorm/migrations/*.{ts,js}'],
-    entities: ['./dist/modules/**/infra/typeorm/entities/*.{ts,js}'],
+    migrations: ['./src/shared/infra/typeorm/migrations/*.{ts,js}'],
+    entities: ['./src/modules/**/infra/typeorm/entities/*.{ts,js}'],
   }
 }
 
