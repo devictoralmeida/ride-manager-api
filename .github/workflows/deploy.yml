@@ -49,5 +49,5 @@ jobs:
             cd ~/app/rentx-api
             npm install
             npm run typeorm:run
-            --update-env
-            sudo -S pm2 restart 0
+            pm2 list
+            pm2 restart rentx_api
