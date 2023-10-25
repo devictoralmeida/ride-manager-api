@@ -17,10 +17,10 @@ class Car {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
+  @Column({ length: 20, unique: true })
   name: string
 
-  @Column()
+  @Column({ length: 20 })
   description: string
 
   @Column()
@@ -29,13 +29,13 @@ class Car {
   @Column({ default: true })
   available: boolean
 
-  @Column()
+  @Column({ length: 8 })
   license_plate: string
 
   @Column()
   fine_amount: number
 
-  @Column()
+  @Column({ length: 15 })
   brand: string
 
   @CreateDateColumn()

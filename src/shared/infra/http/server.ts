@@ -1,5 +1,3 @@
-import 'reflect-metadata'
-import 'express-async-errors'
 import app from '../../../app'
 import { AppDataSource } from '../../../data-source'
 

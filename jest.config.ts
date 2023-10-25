@@ -1,8 +1,7 @@
 import { pathsToModuleNameMapper } from 'ts-jest'
 import { compilerOptions } from './tsconfig.json'
-import type { JestConfigWithTsJest } from 'ts-jest'
 
-const jestConfig: JestConfigWithTsJest = {
+const jestConfig = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -16,13 +15,13 @@ const jestConfig: JestConfigWithTsJest = {
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  collectCoverage: true,
+  // collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['<rootDir>/src/modules/**/useCases/**/*.ts'],
+  // collectCoverageFrom: ['<rootDir>/src/modules/**/useCases/**/*.ts'],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: 'coverage',
+  // coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -30,10 +29,10 @@ const jestConfig: JestConfigWithTsJest = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: 'v8',
+  // coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: ['text-summary', 'lcov'],
+  // coverageReporters: ['text-summary', 'lcov'],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: undefined,

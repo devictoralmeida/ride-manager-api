@@ -1,6 +1,7 @@
 import { UploadCarImagesUseCase } from './UploadCarImagesUseCase'
 import { container } from 'tsyringe'
 import { Response, Request } from 'express'
+import { z } from 'zod'
 
 interface IFiles {
   filename: string
@@ -8,7 +9,12 @@ interface IFiles {
 
 export class UploadCarImagesController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params
+    const uploadCarImagesParamsSchema = z.object({
+      id: z.string().uuid(),
+    })
+
+    const { id } = uploadCarImagesParamsSchema.parse(request.params)
+
     const imagens = request.files as IFiles[]
 
     const uploadCarImageUseCase = container.resolve(UploadCarImagesUseCase)

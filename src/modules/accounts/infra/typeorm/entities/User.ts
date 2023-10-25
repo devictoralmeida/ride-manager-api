@@ -3,25 +3,28 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm'
 import { v4 as uuidV4 } from 'uuid'
 import { Expose } from 'class-transformer'
+import { getRounds, hashSync } from 'bcryptjs'
 
 @Entity('users')
 class User {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
+  @Column({ length: '45' })
   name: string
 
-  @Column()
+  @Column({ length: '45', unique: true })
   email: string
 
-  @Column()
+  @Column({ length: '120' })
   password: string
 
-  @Column()
+  @Column({ length: '10' })
   driver_license: string
 
   @Column({ default: false })
@@ -42,6 +45,16 @@ class User {
         return `${process.env.AWS_BUCKET_BASE_URL}/avatar/${this.avatar}`
       default:
         return null
+    }
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  hashPassword() {
+    const isPasswordEncrypted: number = getRounds(this.password)
+
+    if (!isPasswordEncrypted) {
+      this.password = hashSync(this.password, 8)
     }
   }
 

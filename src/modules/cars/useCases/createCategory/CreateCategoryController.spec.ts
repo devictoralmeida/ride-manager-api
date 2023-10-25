@@ -9,9 +9,6 @@ describe('Create Category Controller', () => {
   let connection: DataSource
 
   beforeAll(async () => {
-    process.env.SECRET_KEY = 'testing'
-    process.env.EXPIRES_IN = '24h'
-
     connection = await AppDataSource.initialize()
     const password = hashSync('admin', 8)
     const id = uuidV4()

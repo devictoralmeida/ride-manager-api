@@ -11,10 +11,10 @@ class Specification {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
+  @Column({ length: 20, unique: true })
   name: string
 
-  @Column()
+  @Column({ length: 20 })
   description: string
 
   @CreateDateColumn()

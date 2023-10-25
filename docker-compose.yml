@@ -2,17 +2,23 @@ version: '3.9'
 
 services:
     db:
-        container_name: db
-        restart: always
-        image: postgres
-        ports:
-            - 6869:5432
-        environment:
-            - POSTGRES_USER=docker
-            - POSTGRES_PASSWORD=258794613
-            - POSTGRES_DB=rentx
-        volumes:
-            - pgdata:/var/lib/postgresql/data
+      container_name: db
+      restart: always
+      image: postgres
+      ports:
+          - 6869:5432
+      environment:
+          - POSTGRES_USER=docker
+          - POSTGRES_PASSWORD=258794613
+          - POSTGRES_DB=rentx
+      volumes:
+          - pgdata:/var/lib/postgresql/data
+
+    redis:
+      image: redis:alpine
+      ports:
+        - 6379:6379
+
     # app:
     #     build: .
     #     restart: always

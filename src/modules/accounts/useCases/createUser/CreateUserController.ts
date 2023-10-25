@@ -1,10 +1,19 @@
 import { container } from 'tsyringe'
 import { Response, Request } from 'express'
 import { CreateUserUseCase } from './CreateUserUseCase'
+import { z } from 'zod'
 
 export class CreateUserController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { name, email, password, driver_license } = request.body
+    const createUserBodySchema = z.object({
+      name: z.string().max(45).toLowerCase(),
+      email: z.string().email().max(45).toLowerCase(),
+      password: z.string().max(6),
+      driver_license: z.string().max(10),
+    })
+
+    const { name, email, password, driver_license } =
+      createUserBodySchema.parse(request.body)
 
     const createUserUseCase = container.resolve(CreateUserUseCase)
 

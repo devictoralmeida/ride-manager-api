@@ -25,9 +25,8 @@ export const ensureAuthenticated = async (
     request.user = {
       id: user_id,
     }
-
-    return next()
   } catch (error) {
     throw new AppError('Invalid token', 401)
   }
+  return next()
 }
