@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
-export default class AppError extends Error {
-  public statusCode: number
+export default class AppError {
+  public readonly message: string
 
-  constructor(message: string, statusCode: number = 400) {
-    super(message)
+  public readonly statusCode: number
+
+  constructor(message: string, statusCode = 400) {
+    this.message = message
     this.statusCode = statusCode
-    console.log(statusCode)
   }
 }

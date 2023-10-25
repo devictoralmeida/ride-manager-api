@@ -1,22 +1,27 @@
 import app from '../../../../app'
 import { DataSource } from 'typeorm'
 import request from 'supertest'
-import { hashSync } from 'bcryptjs'
-import { v4 as uuidV4 } from 'uuid'
 import { AppDataSource } from '../../../../data-source'
+import { createAndAuthenticateAdmin } from '@shared/infra/typeorm/seed/test/createAndAuthenticateAdmin'
+import { createAndAuthenticateCommonUser } from '@shared/infra/typeorm/seed/test/createAndAuthenticateCommonUser'
 
 describe('Create Category Controller', () => {
   let connection: DataSource
+  let adminToken: string
+  let commonToken: string
 
   beforeAll(async () => {
-    connection = await AppDataSource.initialize()
-    const password = hashSync('admin', 8)
-    const id = uuidV4()
+    await AppDataSource.initialize()
+      .then((res) => (connection = res))
+      .catch((error) => console.error(error))
 
-    await connection.query(`
-      INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license)
-        values('${id}', 'admin', 'admin@rentx.com.br', '${password}', true, 'now()', 'XXXXXX');
-    `)
+    const { token } = await createAndAuthenticateAdmin(connection)
+
+    const { token: commonUserToken } =
+      await createAndAuthenticateCommonUser(connection)
+
+    adminToken = token
+    commonToken = commonUserToken
   })
 
   afterAll(async () => {
@@ -24,13 +29,6 @@ describe('Create Category Controller', () => {
   })
 
   it('should be able to create a new category', async () => {
-    const responseToken = await request(app).post(`/sessions`).send({
-      email: 'admin@rentx.com.br',
-      password: 'admin',
-    })
-
-    const { token } = responseToken.body
-
     const response = await request(app)
       .post('/categories')
       .send({
@@ -38,12 +36,12 @@ describe('Create Category Controller', () => {
         description: 'Category Supertest',
       })
       .set({
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       })
 
     const expectedResult = {
       id: expect.any(String),
-      name: 'Category Supertest',
+      name: 'category supertest',
       description: 'Category Supertest',
       created_at: expect.any(String),
     }
@@ -52,25 +50,20 @@ describe('Create Category Controller', () => {
     expect(response.body).toStrictEqual(expectedResult)
   })
 
-  it('should NOT be able to create a new category with name in duplicity', async () => {
-    const responseToken = await request(app).post(`/sessions`).send({
-      email: 'admin@rentx.com.br',
-      password: 'admin',
-    })
-
-    const { token } = responseToken.body
-
+  it('should NOT be able to create a new category with common user token', async () => {
     const response = await request(app)
       .post('/categories')
       .send({
-        name: 'Category Supertest',
-        description: 'Category Supertest',
+        name: 'Category Supertest 2',
+        description: 'Category Supertest 2',
       })
       .set({
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${commonToken}`,
       })
 
-    expect(response.status).toBe(409)
-    expect(response.body).toStrictEqual({ message: 'Category already exists!' })
+    expect(response.status).toBe(401)
+    expect(response.body).toEqual(
+      expect.objectContaining({ message: 'Unauthorized.' }),
+    )
   })
 })

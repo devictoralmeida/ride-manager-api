@@ -12,10 +12,7 @@ export const ensureAdmin = async (
   const usersRepository = new UsersRepository()
   const user = await usersRepository.findById(id)
 
-  console.log('user: ', user)
-
-  if (user.isAdmin === false) {
-    console.log('jogou o erro')
+  if (!user.isAdmin) {
     throw new AppError('Unauthorized.', 401)
   }
 

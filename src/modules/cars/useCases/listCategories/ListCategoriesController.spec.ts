@@ -1,25 +1,22 @@
 import app from '../../../../app'
 import { DataSource } from 'typeorm'
 import request from 'supertest'
-import { hashSync } from 'bcryptjs'
-import { v4 as uuidV4 } from 'uuid'
 import { AppDataSource } from '../../../../data-source'
+import { createAndAuthenticateAdmin } from '@shared/infra/typeorm/seed/test/createAndAuthenticateAdmin'
+import { Category } from '@modules/cars/infra/typeorm/entities/Category'
 
-describe('Create Category Controller', () => {
+describe('List Categories Controller', () => {
   let connection: DataSource
+  let adminToken: string
 
   beforeAll(async () => {
-    process.env.SECRET_KEY = 'testing'
-    process.env.EXPIRES_IN = '24h'
+    await AppDataSource.initialize()
+      .then((res) => (connection = res))
+      .catch((error) => console.error(error))
 
-    connection = await AppDataSource.initialize()
-    const password = hashSync('admin', 8)
-    const id = uuidV4()
+    const { token } = await createAndAuthenticateAdmin(connection)
 
-    await connection.query(`
-      INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license)
-        values('${id}', 'admin', 'admin@rentx.com.br', '${password}', true, 'now()', 'XXXXXX');
-    `)
+    adminToken = token
   })
 
   afterAll(async () => {
@@ -27,37 +24,20 @@ describe('Create Category Controller', () => {
   })
 
   it('should be able to list all categories', async () => {
-    const responseToken = await request(app).post(`/sessions`).send({
-      email: 'admin@rentx.com.br',
-      password: 'admin',
+    await AppDataSource.getRepository(Category).save({
+      name: 'Category Supertest',
+      description: 'Category Supertest',
     })
 
-    const { token } = responseToken.body
-
-    await request(app)
-      .post('/categories')
-      .send({
-        name: 'Category Supertest',
-        description: 'Category Supertest',
-      })
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-
-    await request(app)
-      .post('/categories')
-      .send({
-        name: 'Category Supertest 2',
-        description: 'Category Supertest 2',
-      })
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
+    await AppDataSource.getRepository(Category).save({
+      name: 'Category 2',
+      description: 'Category 2',
+    })
 
     const response = await request(app)
       .get('/categories')
       .set({
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       })
 
     const expectedResult1 = {
@@ -69,8 +49,8 @@ describe('Create Category Controller', () => {
 
     const expectedResult2 = {
       id: expect.any(String),
-      name: 'Category Supertest 2',
-      description: 'Category Supertest 2',
+      name: 'Category 2',
+      description: 'Category 2',
       created_at: expect.any(String),
     }
 
