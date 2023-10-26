@@ -10,6 +10,8 @@ export class UserMap {
     avatar,
     driver_license,
     avatar_url,
+    isAdmin,
+    created_at,
   }: User): IUserResponseDTO {
     const user = instanceToInstance({
       email,
@@ -18,6 +20,8 @@ export class UserMap {
       avatar,
       driver_license,
       avatar_url,
+      isAdmin,
+      created_at,
     })
 
     return user

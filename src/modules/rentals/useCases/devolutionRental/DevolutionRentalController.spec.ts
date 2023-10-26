@@ -7,7 +7,7 @@ import { Category } from '@modules/cars/infra/typeorm/entities/Category'
 import { Car } from '@modules/cars/infra/typeorm/entities/Car'
 import dayjs from 'dayjs'
 
-describe('Create Rental Controller', () => {
+describe('Devolution Rental Controller', () => {
   let connection: DataSource
 
   beforeAll(async () => {
@@ -40,12 +40,18 @@ describe('Create Rental Controller', () => {
 
     const addOneDay = dayjs().add(1, 'day').toDate()
 
-    const response = await request(app)
+    const rental = await request(app)
       .post('/rentals')
       .send({
         car_id: car.id,
         expected_return_date: addOneDay,
       })
+      .set({
+        Authorization: `Bearer ${token}`,
+      })
+
+    const response = await request(app)
+      .post(`/rentals/devolution/${rental.body.id}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -62,7 +68,7 @@ describe('Create Rental Controller', () => {
       total: null,
     }
 
-    expect(response.statusCode).toBe(201)
+    expect(response.statusCode).toBe(200)
     expect(response.body).toStrictEqual(expectedResult)
   })
 })

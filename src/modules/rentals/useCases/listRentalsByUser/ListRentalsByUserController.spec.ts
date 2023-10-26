@@ -7,7 +7,7 @@ import { Category } from '@modules/cars/infra/typeorm/entities/Category'
 import { Car } from '@modules/cars/infra/typeorm/entities/Car'
 import dayjs from 'dayjs'
 
-describe('Create Rental Controller', () => {
+describe('List User Rentals', () => {
   let connection: DataSource
 
   beforeAll(async () => {
@@ -20,7 +20,7 @@ describe('Create Rental Controller', () => {
     await connection.destroy()
   })
 
-  it('should be able to create a new rental to an car', async () => {
+  it('should be able to list all user rentals', async () => {
     const category = await AppDataSource.getRepository(Category).save({
       name: 'Category Supertest',
       description: 'Category Supertest',
@@ -40,12 +40,18 @@ describe('Create Rental Controller', () => {
 
     const addOneDay = dayjs().add(1, 'day').toDate()
 
-    const response = await request(app)
+    await request(app)
       .post('/rentals')
       .send({
         car_id: car.id,
         expected_return_date: addOneDay,
       })
+      .set({
+        Authorization: `Bearer ${token}`,
+      })
+
+    const response = await request(app)
+      .get('/rentals/user')
       .set({
         Authorization: `Bearer ${token}`,
       })

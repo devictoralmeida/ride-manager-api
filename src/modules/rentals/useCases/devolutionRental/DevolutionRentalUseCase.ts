@@ -35,6 +35,10 @@ export class DevolutionRentalUseCase {
       throw new AppError('Car does not exists.')
     }
 
+    if (rental.user_id !== user_id) {
+      throw new AppError('This rental does not belongs to the user.')
+    }
+
     const minimum_daily = 1
     const dateNow = this.dateProvider.dateNow()
 

@@ -22,6 +22,8 @@ export class InMemoryUsersRepository implements IUsersRepository {
       email,
       name,
       password,
+      avatar: null,
+      avatar_url: null,
       isAdmin: isAdmin ?? false,
     })
 

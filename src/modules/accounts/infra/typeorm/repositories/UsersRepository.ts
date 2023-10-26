@@ -16,16 +16,14 @@ export class UsersRepository implements IUsersRepository {
     email,
     driver_license,
     password,
-    avatar,
-    id,
+    isAdmin,
   }: ICreateUserDTO): Promise<User> {
     const user = this.repository.create({
       name,
       email,
       driver_license,
       password,
-      avatar,
-      id,
+      isAdmin: isAdmin ?? false,
     })
 
     await this.repository.save(user)

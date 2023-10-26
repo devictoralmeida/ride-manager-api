@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'reflect-metadata'
 import AppError from '@shared/errors/AppError'
 import { ICreateUserDTO } from '@modules/accounts/dtos/ICreateUserDTO'
@@ -15,11 +14,7 @@ let createUserUseCase: CreateUserUseCase
 let inMemoryUsersTokensRepository: InMemoryUsersTokensRepository
 let dateProvider: DayjsDateProvider
 
-describe('Authenticate User', () => {
-  beforeAll(() => {
-    process.env.SECRET_KEY = 'iabsdkjanfiasudbnaiskjomna84651365'
-  })
-
+describe('Authenticate User UseCase', () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
     inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository()
@@ -61,8 +56,8 @@ describe('Authenticate User', () => {
       }),
     )
 
-    const expiration = Number(new Date(decodedToken.exp!))
-    const issuedAt = Number(new Date(decodedToken.iat!))
+    const expiration = Number(new Date(decodedToken.exp))
+    const issuedAt = Number(new Date(decodedToken.iat))
 
     const timeStampDiff = Math.abs(expiration - issuedAt)
     const hoursDiff = timeStampDiff / 3600
@@ -76,8 +71,9 @@ describe('Authenticate User', () => {
       password: '1234',
     })
 
-    await expect(result).rejects.toThrowError(AppError)
-    await expect(result).rejects.toThrow('Email or password incorrect')
+    await expect(result).rejects.toEqual(
+      new AppError('Email or password incorrect', 401),
+    )
   })
 
   it('should NOT be able to authenticate an user with wrong password', async () => {
@@ -95,7 +91,8 @@ describe('Authenticate User', () => {
       password: '123456',
     })
 
-    await expect(result).rejects.toThrowError(AppError)
-    await expect(result).rejects.toThrow('Email or password incorrect')
+    await expect(result).rejects.toEqual(
+      new AppError('Email or password incorrect', 401),
+    )
   })
 })

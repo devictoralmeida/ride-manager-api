@@ -1,5 +1,6 @@
 import { InMemoryCarsRepository } from '@modules/cars/repositories/in-memory/InMemoryCarsRepository'
 import { CreateCarUseCase } from './CreateCarUseCase'
+import AppError from '@shared/errors/AppError'
 
 let inMemoryCarsRepository: InMemoryCarsRepository
 let createCarUseCase: CreateCarUseCase
@@ -59,7 +60,6 @@ describe('Create Car', () => {
       category_id: '5cba3f74-9b83-4ce6-aafc-7758f95fa233',
     })
 
-    await expect(result).rejects.toThrowError(Error)
-    await expect(result).rejects.toThrow('Car already exists')
+    await expect(result).rejects.toEqual(new AppError('Car already exists'))
   })
 })
