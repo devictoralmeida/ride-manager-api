@@ -34,7 +34,7 @@ describe('Create Rental', () => {
     const addOneDay = dayjs().add(1, 'day').toDate()
     const addThreeDays = dayjs().add(3, 'day').toDate()
 
-    const rental1 = await createRentalUseCase.execute({
+    const rental1 = await inMemoryRentalsRepository.create({
       user_id: 'e9f0e4f8-2f78-49fe-a837-7cc9795e2c73',
       car_id: '542178ba-4b49-4d96-acde-542694227952',
       expected_return_date: addOneDay,
@@ -44,7 +44,7 @@ describe('Create Rental', () => {
 
     rental1.end_date = now
 
-    const rental2 = await createRentalUseCase.execute({
+    const rental2 = await inMemoryRentalsRepository.create({
       user_id: 'e9f0e4f8-2f78-49fe-a837-7cc9795e2c73',
       car_id: '3c1a8c11-c59c-4395-8944-7c7ae380af0e',
       expected_return_date: addThreeDays,

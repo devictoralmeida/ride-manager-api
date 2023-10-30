@@ -10,7 +10,7 @@ let createRentalUseCase: CreateRentalUseCase
 let dayjsDateProvider: DayjsDateProvider
 let inMemoryCarsRepository: InMemoryCarsRepository
 
-describe('Create Rental', () => {
+describe('Create Rental UseCase', () => {
   const addOneDay = dayjs().add(1, 'day').toDate()
 
   beforeEach(() => {
@@ -36,14 +36,22 @@ describe('Create Rental', () => {
       license_plate: 'TEST-123',
     })
 
-    const rental = await createRentalUseCase.execute({
+    const result = await createRentalUseCase.execute({
       user_id: '12345',
       car_id: car.id,
       expected_return_date: addOneDay,
     })
 
-    expect(rental).toHaveProperty('id')
-    expect(rental).toHaveProperty('start_date')
+    const expectedResult = {
+      id: expect.any(String),
+      user_id: '12345',
+      car_id: car.id,
+      created_at: expect.any(Date),
+      start_date: expect.any(Date),
+      expected_return_date: addOneDay,
+    }
+
+    expect(result).toEqual(expect.objectContaining(expectedResult))
     expect(car).toHaveProperty('available', false)
   })
 
@@ -54,15 +62,14 @@ describe('Create Rental', () => {
       user_id: '12346',
     })
 
-    const rental = createRentalUseCase.execute({
+    const result = createRentalUseCase.execute({
       user_id: '12346',
       car_id: '121211',
       expected_return_date: addOneDay,
     })
 
-    await expect(rental).rejects.toBeInstanceOf(AppError)
-    await expect(rental).rejects.toThrow(
-      'There is a rental in progress for user!',
+    await expect(result).rejects.toEqual(
+      new AppError('There is a rental in progress for user!', 409),
     )
   })
 
@@ -73,24 +80,26 @@ describe('Create Rental', () => {
       user_id: '12349',
     })
 
-    const rental = createRentalUseCase.execute({
+    const result = createRentalUseCase.execute({
       user_id: '12399',
       car_id: '121219',
       expected_return_date: addOneDay,
     })
 
-    await expect(rental).rejects.toBeInstanceOf(AppError)
-    await expect(rental).rejects.toThrow('Car is unavailable')
+    await expect(result).rejects.toEqual(
+      new AppError('Car is unavailable', 409),
+    )
   })
 
   it('should NOT be able to create a new Rental with invalid return time', async () => {
-    const rental = createRentalUseCase.execute({
+    const result = createRentalUseCase.execute({
       user_id: '3210',
       car_id: '121219',
       expected_return_date: dayjs().toDate(),
     })
 
-    await expect(rental).rejects.toBeInstanceOf(AppError)
-    await expect(rental).rejects.toThrow('Invalid return time!')
+    await expect(result).rejects.toEqual(
+      new AppError('Invalid return time!', 409),
+    )
   })
 })
