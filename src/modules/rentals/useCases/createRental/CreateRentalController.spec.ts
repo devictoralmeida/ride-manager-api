@@ -65,4 +65,30 @@ describe('Create Rental Controller', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body).toStrictEqual(expectedResult)
   })
+
+  it('should NOT be possible to create a new rent with an invalid token', async () => {
+    const response = await request(app)
+      .post(`/rentals/devolution/1123213`)
+      .set({
+        Authorization: `Bearer 123546`,
+      })
+
+    const expectedResult = {
+      message: 'Invalid token',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
+
+  it('should NOT be possible to create a new rent without a token', async () => {
+    const response = await request(app).post(`/rentals/devolution/1123213`)
+
+    const expectedResult = {
+      message: 'Token missing',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
 })

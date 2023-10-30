@@ -7,7 +7,6 @@ let createCategoryUseCase: CreateCategoryUseCase
 
 describe('Create Category Use Case', () => {
   beforeEach(() => {
-    // Aqui vamos instanciar as nossas variáveis
     categoriesRepositoryInMemory = new InMemoryCategoriesRepository()
     createCategoryUseCase = new CreateCategoryUseCase(
       categoriesRepositoryInMemory,
@@ -41,7 +40,8 @@ describe('Create Category Use Case', () => {
       description: 'Category Description Test',
     })
 
-    await expect(result).rejects.toThrowError(AppError)
-    await expect(result).rejects.toThrow('Category already exists!')
+    await expect(result).rejects.toEqual(
+      new AppError('Category already exists!', 409),
+    )
   })
 })

@@ -54,12 +54,27 @@ describe('Profile User Controller', () => {
     expect(response.body).toStrictEqual(expectedResult)
   })
 
-  it('should NOT be able to get user profile without token', async () => {
+  it('should NOT be able to get user profile with an invalid token', async () => {
     const response = await request(app).get('/users/profile').set({
-      Authorization: `123`,
+      Authorization: `Bearer 999`,
     })
 
+    const expectedResult = {
+      message: 'Invalid token',
+    }
+
     expect(response.status).toBe(401)
-    expect(response.body).toStrictEqual({ message: 'Invalid token' })
+    expect(response.body).toStrictEqual(expectedResult)
+  })
+
+  it('should NOT be able to get user profile without a token', async () => {
+    const response = await request(app).get('/users/profile')
+
+    const expectedResult = {
+      message: 'Token missing',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
   })
 })

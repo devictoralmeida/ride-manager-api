@@ -8,10 +8,10 @@ interface IRequest {
   description: string
 }
 
-@injectable() // Passo o injectable aqui pq eu irei injetar esse Use Case dentro do handle do controller
+@injectable()
 export class CreateCategoryUseCase {
   constructor(
-    @inject('CategoriesRepository') // @inject e dentro eu passo o nome do container
+    @inject('CategoriesRepository')
     private categoriesRepository: ICategoriesRepository,
   ) {}
 

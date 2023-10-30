@@ -66,4 +66,28 @@ describe('Create Category Controller', () => {
       expect.objectContaining({ message: 'Unauthorized.' }),
     )
   })
+
+  it('should NOT be able to create a new category with invalid token', async () => {
+    const response = await request(app).post('/categories').set({
+      Authorization: `Bearer 1234`,
+    })
+
+    const expectedResult = {
+      message: 'Invalid token',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
+
+  it('should NOT be able to create a new category without a token', async () => {
+    const response = await request(app).post('/categories')
+
+    const expectedResult = {
+      message: 'Token missing',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
 })

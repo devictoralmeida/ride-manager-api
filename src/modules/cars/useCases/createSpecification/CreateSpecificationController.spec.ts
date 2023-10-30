@@ -66,4 +66,28 @@ describe('Create Specification Controller', () => {
       expect.objectContaining({ message: 'Unauthorized.' }),
     )
   })
+
+  it('should NOT be able to create a new specification with an invalid token', async () => {
+    const response = await request(app).post('/specifications').set({
+      Authorization: `Bearer 123456`,
+    })
+
+    const expectedResult = {
+      message: 'Invalid token',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
+
+  it('should NOT be able to create a new specification without a token', async () => {
+    const response = await request(app).post('/specifications')
+
+    const expectedResult = {
+      message: 'Token missing',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
 })

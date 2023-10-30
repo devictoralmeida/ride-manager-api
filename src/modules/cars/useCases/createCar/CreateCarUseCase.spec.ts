@@ -5,7 +5,7 @@ import AppError from '@shared/errors/AppError'
 let inMemoryCarsRepository: InMemoryCarsRepository
 let createCarUseCase: CreateCarUseCase
 
-describe('Create Car', () => {
+describe('Create Car UseCase', () => {
   beforeEach(() => {
     inMemoryCarsRepository = new InMemoryCarsRepository()
     createCarUseCase = new CreateCarUseCase(inMemoryCarsRepository)
@@ -36,7 +36,6 @@ describe('Create Car', () => {
     }
 
     expect(car).toStrictEqual(expect.objectContaining(expectedResult))
-    expect(car.available).toBe(true)
   })
 
   it('should NOT be able to create a car with existing license plate', async () => {
@@ -60,6 +59,8 @@ describe('Create Car', () => {
       category_id: '5cba3f74-9b83-4ce6-aafc-7758f95fa233',
     })
 
-    await expect(result).rejects.toEqual(new AppError('Car already exists'))
+    await expect(result).rejects.toEqual(
+      new AppError('Car already exists', 409),
+    )
   })
 })

@@ -102,4 +102,28 @@ describe('Create Car Controller', () => {
       expect.objectContaining({ message: 'Unauthorized.' }),
     )
   })
+
+  it('should NOT be able to create a new car with invalid token', async () => {
+    const response = await request(app).post('/cars').set({
+      Authorization: `Bearer 1324`,
+    })
+
+    const expectedResult = {
+      message: 'Invalid token',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
+
+  it('should NOT be able to create a new car without a token', async () => {
+    const response = await request(app).post('/cars')
+
+    const expectedResult = {
+      message: 'Token missing',
+    }
+
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
 })
