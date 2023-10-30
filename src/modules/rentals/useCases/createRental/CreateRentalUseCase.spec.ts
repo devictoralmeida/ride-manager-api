@@ -5,8 +5,8 @@ import { InMemoryRentalsRepository } from './../../repositories/in-memory/InMemo
 import { CreateRentalUseCase } from './CreateRentalUseCase'
 import { DayjsDateProvider } from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider'
 
-let createRentalUseCase: CreateRentalUseCase
 let inMemoryRentalsRepository: InMemoryRentalsRepository
+let createRentalUseCase: CreateRentalUseCase
 let dayjsDateProvider: DayjsDateProvider
 let inMemoryCarsRepository: InMemoryCarsRepository
 

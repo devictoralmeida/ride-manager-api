@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepository'
 import { IStorageProvider } from '@shared/container/providers/StorageProvider/IStorageProvider'
 import { inject, injectable } from 'tsyringe'
+import { User } from '@modules/accounts/infra/typeorm/entities/User'
 
 interface IRequest {
   user_id: string
@@ -18,7 +19,7 @@ export class UpdateUserAvatarUseCase {
     private storageProvider: IStorageProvider,
   ) {}
 
-  async execute({ user_id, avatar_file }: IRequest): Promise<void> {
+  async execute({ user_id, avatar_file }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id)
 
     if (user) {
@@ -30,6 +31,7 @@ export class UpdateUserAvatarUseCase {
 
       user.avatar = avatar_file
       await this.usersRepository.create(user)
+      return user
     }
   }
 }

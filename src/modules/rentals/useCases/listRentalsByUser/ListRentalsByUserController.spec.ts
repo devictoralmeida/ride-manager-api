@@ -56,19 +56,57 @@ describe('List User Rentals', () => {
         Authorization: `Bearer ${token}`,
       })
 
+    const expectedResult = [
+      {
+        id: expect.any(String),
+        car_id: car.id,
+        expected_return_date: expect.any(String),
+        user_id: expect.any(String),
+        created_at: expect.any(String),
+        start_date: expect.any(String),
+        updated_at: expect.any(String),
+        end_date: null,
+        total: null,
+        car: {
+          id: car.id,
+          available: false,
+          name: 'Car Test',
+          description: 'Description test',
+          daily_rate: 50,
+          license_plate: 'ABC-1234',
+          fine_amount: 100,
+          brand: 'Brand test',
+          created_at: expect.any(String),
+          category_id: category.id,
+        },
+      },
+    ]
+
+    expect(response.status).toBe(200)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
+
+  it('should NOT be able to list user rentals with a invalid token', async () => {
+    const response = await request(app).get('/rentals/user').set({
+      Authorization: `Bearer 123546`,
+    })
+
     const expectedResult = {
-      id: expect.any(String),
-      car_id: car.id,
-      expected_return_date: expect.any(String),
-      user_id: expect.any(String),
-      created_at: expect.any(String),
-      start_date: expect.any(String),
-      updated_at: expect.any(String),
-      end_date: null,
-      total: null,
+      message: 'Invalid token',
     }
 
-    expect(response.statusCode).toBe(201)
+    expect(response.status).toBe(401)
+    expect(response.body).toStrictEqual(expectedResult)
+  })
+
+  it('should NOT be able to list user rentals without a token', async () => {
+    const response = await request(app).get('/rentals/user')
+
+    const expectedResult = {
+      message: 'Token missing',
+    }
+
+    expect(response.status).toBe(401)
     expect(response.body).toStrictEqual(expectedResult)
   })
 })

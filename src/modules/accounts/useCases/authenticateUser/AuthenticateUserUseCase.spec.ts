@@ -28,7 +28,7 @@ describe('Authenticate User UseCase', () => {
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository)
   })
 
-  it('should be able to authenticate an user with a valid token', async () => {
+  it('should be able to authenticate an user', async () => {
     const user: ICreateUserDTO = {
       name: 'User Test',
       password: '1234',

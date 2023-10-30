@@ -19,7 +19,7 @@ describe('Authenticate User Controller', () => {
   })
 
   it('should be able to authenticate an user', async () => {
-    const userResponse = await AppDataSource.getRepository(User).save({
+    await AppDataSource.getRepository(User).save({
       name: 'John Doe',
       email: 'jhon@mail.com',
       password: hashSync('1234', 8),

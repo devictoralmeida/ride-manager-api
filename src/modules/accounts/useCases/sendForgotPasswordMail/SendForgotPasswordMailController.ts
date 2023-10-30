@@ -15,7 +15,7 @@ export class SendForgotPasswordMailController {
       SendForgotPasswordMailUseCase,
     )
 
-    await sendForgotPasswordMailUseCase.execute(email)
-    return response.status(200).json()
+    const successMessage = await sendForgotPasswordMailUseCase.execute(email)
+    return response.status(200).json(successMessage)
   }
 }

@@ -9,6 +9,10 @@ import { v4 as uuidV4 } from 'uuid'
 import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider'
 import { IMailProvider } from '@shared/container/providers/MailProvider/IMailProvider'
 
+interface IResponse {
+  message: string
+}
+
 @injectable()
 export class SendForgotPasswordMailUseCase {
   constructor(
@@ -25,7 +29,7 @@ export class SendForgotPasswordMailUseCase {
     private mailProvider: IMailProvider,
   ) {}
 
-  async execute(email: string): Promise<void> {
+  async execute(email: string): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email)
 
     if (!user) {
@@ -57,5 +61,7 @@ export class SendForgotPasswordMailUseCase {
       variables,
       templatePath,
     )
+
+    return { message: 'Email sent with sucess' }
   }
 }

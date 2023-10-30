@@ -35,8 +35,6 @@ describe('Create User Controller', () => {
       created_at: expect.any(String),
     }
 
-    console.log(response.body)
-
     expect(response.status).toBe(201)
     expect(response.body).toStrictEqual(expectedResult)
   })

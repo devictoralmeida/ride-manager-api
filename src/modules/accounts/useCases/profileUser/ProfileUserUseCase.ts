@@ -1,7 +1,6 @@
 import { IUserResponseDTO } from '@modules/accounts/dtos/IUserResponseDTO'
 import { UserMap } from '@modules/accounts/mapper/UserMap'
 import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepository'
-import { IStorageProvider } from '@shared/container/providers/StorageProvider/IStorageProvider'
 import AppError from '@shared/errors/AppError'
 import { injectable, inject } from 'tsyringe'
 
@@ -10,9 +9,6 @@ export class ProfileUserUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-
-    @inject('StorageProvider')
-    private storageProvider: IStorageProvider,
   ) {}
 
   async execute(id: string): Promise<IUserResponseDTO> {

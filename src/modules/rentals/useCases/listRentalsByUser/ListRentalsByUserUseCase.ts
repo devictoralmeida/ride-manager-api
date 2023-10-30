@@ -11,6 +11,7 @@ export class ListRentalsByUserUseCase {
 
   async execute(user_id: string): Promise<Rental[]> {
     const rentalsByUser = await this.rentalsRepository.findByUser(user_id)
+
     return rentalsByUser
   }
 }

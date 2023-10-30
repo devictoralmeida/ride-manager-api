@@ -43,8 +43,7 @@ describe('Send Forgot Email', () => {
   it('Should NOT be able to send a forgot password mail if user does not exists', async () => {
     const result = sendForgotPasswordMailUseCase.execute('123@tu.pe')
 
-    await expect(result).rejects.toThrowError(AppError)
-    await expect(result).rejects.toThrow('User not found')
+    await expect(result).rejects.toEqual(new AppError('User not found', 404))
   })
 
   it('Should be able to create an users token', async () => {

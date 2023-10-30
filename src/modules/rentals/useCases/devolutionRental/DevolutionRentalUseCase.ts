@@ -25,22 +25,22 @@ export class DevolutionRentalUseCase {
 
   async execute({ id, user_id }: IRequest): Promise<Rental> {
     const rental = await this.rentalsRepository.findById(id)
-    const car = await this.carsRepository.findById(rental.car_id)
 
     if (!rental) {
-      throw new AppError('Rental does not exists.')
+      throw new AppError('Rental does not exists.', 404)
     }
 
+    const car = await this.carsRepository.findById(rental.car_id)
+
     if (!car) {
-      throw new AppError('Car does not exists.')
+      throw new AppError('Car does not exists.', 404)
     }
 
     if (rental.user_id !== user_id) {
-      throw new AppError('This rental does not belongs to the user.')
+      throw new AppError('This rental does not belongs to the user.', 409)
     }
 
     const minimum_daily = 1
-    const dateNow = this.dateProvider.dateNow()
 
     let dailiesNumber = this.dateProvider.compareInDays(
       rental.start_date,
@@ -51,9 +51,11 @@ export class DevolutionRentalUseCase {
       dailiesNumber = minimum_daily
     }
 
+    rental.end_date = this.dateProvider.dateNow()
+
     const delay = this.dateProvider.compareInDays(
-      dateNow,
       rental.expected_return_date,
+      rental.end_date,
     )
 
     let total = 0
@@ -65,7 +67,6 @@ export class DevolutionRentalUseCase {
 
     total += dailiesNumber * car.daily_rate
 
-    rental.end_date = this.dateProvider.dateNow()
     rental.total = total
 
     await this.rentalsRepository.create(rental)
