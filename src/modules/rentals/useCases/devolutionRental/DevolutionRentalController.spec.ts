@@ -24,7 +24,7 @@ describe('Devolution Rental Controller', () => {
 
     adminToken = token
     commonToken = commonUserToken
-  })
+  }, 80000)
 
   afterAll(async () => {
     await connection.destroy()

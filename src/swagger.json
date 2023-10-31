@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "RentX Documentation",
-    "description": "This is an API Rent",
+    "title": "Documentação RideManager",
+    "description": "API desenvolvida para uma locadora de veículos",
     "version": "1.0.0",
     "contact": {
       "email": "victoremmanuelmn@gmail.com"

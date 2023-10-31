@@ -6,34 +6,18 @@ services:
       restart: always
       image: postgres
       ports:
-          - 6869:5432
+          - 5432:5432
       environment:
           - POSTGRES_USER=docker
           - POSTGRES_PASSWORD=258794613
-          - POSTGRES_DB=rentx
+          - POSTGRES_DB=ride-manager
       volumes:
-          - pgdata:/var/lib/postgresql/data
+          - pgdata:/data/postgres
 
     redis:
       image: redis:alpine
       ports:
         - 6379:6379
-
-    # app:
-    #     build: .
-    #     restart: always
-    #     container_name: rentx
-    #     ports:
-    #         - 3333:3333
-    #         - 9229:9229
-    #     environment:
-    #         - PGHOST=db
-    #     volumes:
-    #         - .:/usr/app
-    #     links:
-    #         - db
-    #     depends_on:
-    #         - db
 
 volumes:
     pgdata:

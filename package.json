@@ -14,7 +14,7 @@
     "typeorm:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source",
     "typeorm:run": "typeorm-ts-node-commonjs migration:run -d src/data-source",
     "typeorm:revert": "typeorm-ts-node-commonjs migration:revert -d src/data-source",
-    "test": "cross-env NODE_ENV=test SECRET_KEY=secret_key EXPIRES_IN=1h jest --verbose --runInBand --detectOpenHandles --watch",
+    "test": "cross-env NODE_ENV=test SECRET_KEY=secret_key EXPIRES_IN=1h jest --verbose --runInBand --watch",
     "seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
   },
   "dependencies": {

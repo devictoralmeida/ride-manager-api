@@ -17,7 +17,7 @@ describe('Create Car Specifications', () => {
     )
   })
 
-  it('Should NOT be able to add a new specification to a non-existent car', async () => {
+  it('Should NOT be able to add a new specification to a inexistent car', async () => {
     const car_id = '123'
     const specifications_id = ['54321']
 
@@ -26,7 +26,9 @@ describe('Create Car Specifications', () => {
       specifications_id,
     })
 
-    await expect(result).rejects.toBeInstanceOf(AppError)
+    await expect(result).rejects.toEqual(
+      new AppError('Car does not exists!', 404),
+    )
   })
 
   it('Should be able to add a new specification to a car', async () => {
@@ -45,14 +47,50 @@ describe('Create Car Specifications', () => {
       name: 'Teste',
     })
 
-    const specifications_id = [specification.id]
+    const specification2 = await inMemorySpecificationsRepository.create({
+      description: 'Teste 2',
+      name: 'Teste 2',
+    })
 
-    const specificationsCars = await createCarSpecificationUseCase.execute({
+    const specifications_id = [specification.id, specification2.id]
+
+    const result = await createCarSpecificationUseCase.execute({
       car_id: car.id,
       specifications_id,
     })
 
-    expect(specificationsCars).toHaveProperty('specifications')
-    expect(specificationsCars.specifications.length).toBe(1)
+    const specificationMock = {
+      id: specification.id,
+      description: 'Teste',
+      name: 'Teste',
+      created_at: expect.any(Date),
+    }
+
+    const specificationMock2 = {
+      id: specification2.id,
+      name: 'Teste 2',
+      description: 'Teste 2',
+      created_at: expect.any(Date),
+    }
+
+    const expectedResult = {
+      id: car.id,
+      brand: 'Brand',
+      daily_rate: 100,
+      description: 'Description Car',
+      fine_amount: 60,
+      license_plate: 'ABC-1234',
+      name: 'Name Car',
+      category_id: 'category',
+      available: true,
+      specifications: [
+        expect.objectContaining(specificationMock),
+        expect.objectContaining(specificationMock2),
+      ],
+      created_at: expect.any(Date),
+    }
+
+    expect(result.specifications.length).toBe(2)
+    expect(result).toEqual(expectedResult)
   })
 })

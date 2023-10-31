@@ -15,11 +15,11 @@ export class UploadCarImagesController {
 
     const { id } = uploadCarImagesParamsSchema.parse(request.params)
 
-    const imagens = request.files as IFiles[]
+    const images = request.files as IFiles[]
 
     const uploadCarImageUseCase = container.resolve(UploadCarImagesUseCase)
 
-    const images_name = imagens.map((file) => file.filename)
+    const images_name = images.map((file) => file.filename)
 
     await uploadCarImageUseCase.execute({
       car_id: id,

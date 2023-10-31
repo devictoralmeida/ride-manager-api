@@ -12,26 +12,24 @@ import swaggerFile from './swagger.json'
 import { router } from './shared/infra/http/routes'
 import { handleErrors } from './shared/infra/http/middlewares/handleErrors'
 import { rateLimitMiddleware } from '@shared/infra/http/middlewares/rateLimiter'
-import AppError from '@shared/errors/AppError'
-import { z } from 'zod'
 
 const app = express()
 
-// app.use(rateLimitMiddleware)
+app.use(rateLimitMiddleware)
 
-// Sentry.init({
-//   dsn: process.env.SENTRY_DSN,
-//   integrations: [
-//     new Sentry.Integrations.Http({ tracing: true }),
-//     new Sentry.Integrations.Express({ app }),
-//     new ProfilingIntegration(),
-//   ],
-//   tracesSampleRate: 1.0,
-//   profilesSampleRate: 1.0,
-// })
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [
+    new Sentry.Integrations.Http({ tracing: true }),
+    new Sentry.Integrations.Express({ app }),
+    new ProfilingIntegration(),
+  ],
+  tracesSampleRate: 1.0,
+  profilesSampleRate: 1.0,
+})
 
-// app.use(Sentry.Handlers.requestHandler())
-// app.use(Sentry.Handlers.tracingHandler())
+app.use(Sentry.Handlers.requestHandler())
+app.use(Sentry.Handlers.tracingHandler())
 
 app.use(express.json())
 
@@ -46,23 +44,6 @@ app.use(router)
 
 app.use(handleErrors)
 
-// app.use(Sentry.Handlers.errorHandler())
-
-// app.use(
-//   (err: Error, request: Request, response: Response, next: NextFunction) => {
-//     if (err instanceof AppError) {
-//       return response.status(err.statusCode).json({
-//         message: err.message,
-//       })
-//     }
-//     if (err instanceof z.ZodError) {
-//       return response.status(400).json({ message: err.flatten().fieldErrors })
-//     }
-//     return response.status(500).json({
-//       status: 'error',
-//       message: `Internal server error - ${err.message}`,
-//     })
-//   },
-// )
+app.use(Sentry.Handlers.errorHandler())
 
 export default app

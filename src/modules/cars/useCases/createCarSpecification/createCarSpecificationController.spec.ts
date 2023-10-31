@@ -31,7 +31,7 @@ describe('Create Car Specification Controller', () => {
     await connection.destroy()
   })
 
-  it('should be able to create a new specification to an existent car', async () => {
+  it('should be able to create a new specification to a car', async () => {
     const category = await AppDataSource.getRepository(Category).save({
       name: 'Category Supertest',
       description: 'Category Supertest',

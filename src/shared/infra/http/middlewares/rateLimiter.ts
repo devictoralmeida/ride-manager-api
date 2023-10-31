@@ -17,7 +17,7 @@ redisClient.on('error', (error: any) => {
 const opts = {
   storeClient: redisClient,
   points: 2,
-  duration: 5,
+  duration: 10,
   execEvenly: false,
   blockDuration: 0,
   keyPrefix: 'ensrl',
