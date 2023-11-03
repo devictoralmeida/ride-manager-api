@@ -11,4 +11,5 @@ export interface ICarsRepository {
     category_id?: string,
     name?: string,
   ): Promise<Car[]>
+  update(car: Car): Promise<Car>
 }

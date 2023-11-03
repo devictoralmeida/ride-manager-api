@@ -1,21 +1,22 @@
 import nodemailer, { Transporter } from 'nodemailer'
-// import aws from 'aws-sdk'
-import { SES } from 'aws-sdk'
+import aws from 'aws-sdk'
 import { injectable } from 'tsyringe'
 import fs from 'fs'
 import handlebars from 'handlebars'
 import { IMailProvider } from '../IMailProvider'
 
 @injectable()
-export class SESMailProvider implements IMailProvider {
+export class SesMailProvider implements IMailProvider {
   private client: Transporter
 
   constructor() {
+    const ses = new aws.SES({
+      apiVersion: '2010-12-01',
+      region: process.env.AWS_REGION,
+    })
+
     this.client = nodemailer.createTransport({
-      SES: new SES({
-        apiVersion: '2010-12-01',
-        region: process.env.AWS_REGION,
-      }),
+      SES: { ses, aws },
     })
   }
 
@@ -32,8 +33,8 @@ export class SESMailProvider implements IMailProvider {
     const templateHTML = templateParse(variables)
 
     await this.client.sendMail({
+      from: 'Ride Manager <devictoralmeida@devictoralmeida.com.br>',
       to,
-      from: 'Ride Manager <ride-manager@dlevangelista.com>',
       subject,
       html: templateHTML,
     })

@@ -31,7 +31,7 @@ export class InMemoryUsersRepository implements IUsersRepository {
     return newUser
   }
 
-  async updateAvatar(user: User): Promise<User> {
+  async update(user: User): Promise<User> {
     const foundedIndex = this.users.findIndex((item) => item.id === user.id)
     this.users[foundedIndex] = user
     return user

@@ -10,11 +10,11 @@ export const createAndAuthenticateAdmin = async (connection: DataSource) => {
 
   await connection.query(`
     INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license)
-      values('${id}', 'admin', 'admin@rentx.com.br', '${password}', true, 'now()', 'XXXXXX');
+      values('${id}', 'admin', 'admin@ride-manager.com.br', '${password}', true, 'now()', 'XXXXXX');
   `)
 
   const response = await request(app).post(`/sessions`).send({
-    email: 'admin@rentx.com.br',
+    email: 'admin@ride-manager.com.br',
     password: 'admin',
   })
 

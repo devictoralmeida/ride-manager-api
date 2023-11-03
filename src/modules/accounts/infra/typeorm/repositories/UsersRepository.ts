@@ -12,7 +12,7 @@ export class UsersRepository implements IUsersRepository {
     this.repository = AppDataSource.getRepository(User)
   }
 
-  async updateAvatar(user: User): Promise<User> {
+  async update(user: User): Promise<User> {
     await this.repository.save(user)
     return user
   }

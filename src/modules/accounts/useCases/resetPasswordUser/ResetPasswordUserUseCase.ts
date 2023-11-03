@@ -11,6 +11,10 @@ interface IRequest {
   password: string
 }
 
+interface IResponse {
+  message: string
+}
+
 @injectable()
 export class ResetPasswordUserUseCase {
   constructor(
@@ -24,7 +28,7 @@ export class ResetPasswordUserUseCase {
     private usersRepository: IUsersRepository,
   ) {}
 
-  async execute({ token, password }: IRequest): Promise<void> {
+  async execute({ token, password }: IRequest): Promise<IResponse> {
     const userToken = await this.usersTokensRepository.findByRefreshToken(token)
 
     if (!userToken) {
@@ -37,7 +41,7 @@ export class ResetPasswordUserUseCase {
         this.dateProvider.dateNow(),
       )
     ) {
-      throw new AppError('Invalid expired', 409)
+      throw new AppError('Token expired', 409)
     }
 
     const user = await this.usersRepository.findById(userToken.user_id)
@@ -50,8 +54,8 @@ export class ResetPasswordUserUseCase {
 
     user.password = newPassword
 
-    await this.usersRepository.create(user)
-
+    await this.usersRepository.update(user)
     await this.usersTokensRepository.deleteById(userToken.id)
+    return { message: 'Password changed successfully' }
   }
 }

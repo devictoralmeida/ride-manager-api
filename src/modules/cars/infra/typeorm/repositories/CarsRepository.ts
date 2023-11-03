@@ -98,4 +98,9 @@ export class CarsRepository implements ICarsRepository {
       .setParameters({ id })
       .execute()
   }
+
+  async update(car: Car): Promise<Car> {
+    await this.repository.save(car)
+    return car
+  }
 }

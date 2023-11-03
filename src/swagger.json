@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Documentação RideManager",
-    "description": "API desenvolvida para uma locadora de veículos",
+    "title": "Documentation RideManager",
+    "description": "API developed for a car rental company",
     "version": "1.0.0",
     "contact": {
       "email": "victoremmanuelmn@gmail.com"
@@ -176,9 +176,85 @@
         }
       }
     },
+    "/password/reset?token=": {
+      "post": {
+        "tags": ["Password"],
+        "summary": "Reset user's password",
+        "description": "Reset user's password",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "The refresh token received by email",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "minLength": "4",
+                    "maxLength": "6",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "type": "object",
+                  "example": {
+                    "message": "Password changed successfully"
+                  }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "User not found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Token expired or invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Token expired OR invalid token"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/categories": {
       "post": {
-        "tags": ["Categories"],
+        "tags": ["Categories - Admin Token"],
         "summary": "Create a new category",
         "description": "Create a new category",
         "security": [{ "bearerAuth": [] }],
@@ -224,21 +300,13 @@
         "description": "List all categories",
         "responses": {
           "200": {
-            "description": "Sucess",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "description": {
-                        "type": "string"
-                      }
-                    }
+                    "$ref": "#/response/Category"
                   }
                 }
               }
@@ -249,11 +317,12 @@
     },
     "/categories/import": {
       "post": {
-        "tags": ["Categories"],
-        "summary": "Upload a new category",
-        "description": "Upload a new category",
+        "tags": ["Categories - Admin Token"],
+        "summary": "Upload a new category from a csv file",
+        "description": "Upload a new category from a csv file",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
+          "required": true,
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -271,13 +340,26 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "409": {
+            "description": "Category already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Category already exists"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/specifications": {
       "post": {
-        "tags": ["Specifications"],
+        "tags": ["Specifications - Admin Token"],
         "summary": "Create a new specification",
         "description": "Create a new specification",
         "security": [{ "bearerAuth": [] }],
@@ -426,9 +508,31 @@
         }
       }
     },
+    "/cars/available": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "List all available cars",
+        "description": "List all available cars",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/response/Car"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/cars/images/{id}": {
       "post": {
-        "tags": ["Cars"],
+        "tags": ["Cars - Admin token"],
         "summary": "Upload car images",
         "description": "Upload car images",
         "security": [{ "bearerAuth": [] }],
@@ -439,7 +543,8 @@
             "description": "Car id",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -464,6 +569,71 @@
         "responses": {
           "201": {
             "description": "Created"
+          }
+        }
+      }
+    },
+    "/cars/specifications/{id}": {
+      "post": {
+        "tags": ["Cars - Admin token"],
+        "summary": "Add a specification to an existing car",
+        "description": "Add a specification to an existing car",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Car id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "specifications_id": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/response/CarWithSpecifications"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car does not exists OR Specification does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Car does not exists!",
+                    "message2": "Specification does not exists"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -649,6 +819,35 @@
         "available": true,
         "category_id": "ddd9588f-b5c8-4a00-98f9-381959e1c01a",
         "created_at": "2023-10-31T17:32:28Z"
+      }
+    },
+    "CarWithSpecifications": {
+      "type": "object",
+      "example": {
+        "id": "24a65ef9-81de-4a3d-be09-db534e24f335",
+        "name": "Car name",
+        "description": "Car description",
+        "brand": "Car brand",
+        "daily_rate": 100,
+        "fine_amount": 60,
+        "license_plate": "ABA-1234",
+        "available": true,
+        "category_id": "ddd9588f-b5c8-4a00-98f9-381959e1c01a",
+        "created_at": "2023-10-31T17:32:28Z",
+        "specifications": [
+          {
+            "id": "86f5ffab-8ca3-4844-beac-cbaba93b6004",
+            "name": "Specif name",
+            "description": "Specif desc",
+            "created_at": "2023-10-30T12:32:28Z"
+          },
+          {
+            "id": "3369a9fa-5050-499a-be22-72c96e3e37be",
+            "name": "Specif 2",
+            "description": "Specif 2",
+            "created_at": "2023-10-31T17:32:28Z"
+          }
+        ]
       }
     },
     "Rental": {

@@ -17,7 +17,10 @@ export class ResetPasswordUserController {
     const { token } = resetPasswordUserQuerySchema.parse(request.query)
 
     const resetPasswordUserUseCase = container.resolve(ResetPasswordUserUseCase)
-    resetPasswordUserUseCase.execute({ token: String(token), password })
-    return response.status(204).json()
+    const successMessage = await resetPasswordUserUseCase.execute({
+      token: String(token),
+      password,
+    })
+    return response.status(200).json(successMessage)
   }
 }
