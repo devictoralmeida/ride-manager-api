@@ -672,10 +672,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "schema": {
-                  "$ref": "#/definitions/Rental"
-                }
+                "$ref": "#/definitions/Rental"
               }
             }
           }
