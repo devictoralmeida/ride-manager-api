@@ -34,9 +34,9 @@ export class CreateCarSpecificationUseCase {
         throw new AppError('Specifications does not exists!', 404)
       }
       carExists.specifications = [...carExists.specifications, specification]
+      await this.carsRepository.update(carExists)
     })
 
-    const newCar = await this.carsRepository.update(carExists)
-    return newCar
+    return carExists
   }
 }
