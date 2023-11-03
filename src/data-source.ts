@@ -17,11 +17,11 @@ const settings = (): DataSourceOptions => {
   return {
     type: 'postgres',
     host: 'localhost' || process.env.PGHOST,
-    port: Number(process.env.POSTGRES_PORT),
-    username: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
+    port: 65432,
+    username: 'docker',
+    password: '258794613',
     // logging: true,
-    database: process.env.POSTGRES_DB,
+    database: 'ride-manager',
     migrations: ['./src/shared/infra/typeorm/migrations/*.{ts,js}'],
     entities: ['./src/modules/**/infra/typeorm/entities/*.{ts,js}'],
   }

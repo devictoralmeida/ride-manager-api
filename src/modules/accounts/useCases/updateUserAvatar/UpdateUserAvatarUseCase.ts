@@ -27,11 +27,14 @@ export class UpdateUserAvatarUseCase {
       throw new AppError('User not found', 404)
     }
 
-    await this.storageProvider.delete(user.avatar, 'avatar')
+    if (user.avatar && user.avatar !== null) {
+      await this.storageProvider.delete(user.avatar, 'avatar')
+    }
+
     await this.storageProvider.save(avatar_file, 'avatar')
 
     user.avatar = avatar_file
-    await this.usersRepository.updateAvatar(user)
+    await this.usersRepository.update(user)
     return user
   }
 }

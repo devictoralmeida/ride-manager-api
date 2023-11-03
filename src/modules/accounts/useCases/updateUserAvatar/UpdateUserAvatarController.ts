@@ -6,7 +6,9 @@ export class UpdateUserAvatarController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user
 
-    const avatar_file = request.file!.filename // Pegando o fileName obtido pelo middleware do multer
+    const avatar_file = request.file.filename // Pegando o fileName obtido pelo middleware do multer
+
+    console.log(avatar_file)
 
     const updateUserAvatarUseCase = container.resolve(UpdateUserAvatarUseCase)
 
