@@ -27,15 +27,16 @@ export class CreateCarSpecificationUseCase {
       throw new AppError('Car does not exists!', 404)
     }
 
-    specifications_id.map(async (item) => {
-      const specification = await this.specificationsRepository.findById(item)
+    const specifications =
+      await this.specificationsRepository.findByIds(specifications_id)
 
-      if (!specification) {
-        throw new AppError('Specifications does not exists!', 404)
-      }
-      carExists.specifications = [...carExists.specifications, specification]
-      await this.carsRepository.update(carExists)
-    })
+    if (!specifications) {
+      throw new AppError('Specification does not exists', 404)
+    }
+
+    carExists.specifications = specifications
+
+    await this.carsRepository.create(carExists)
 
     return carExists
   }
