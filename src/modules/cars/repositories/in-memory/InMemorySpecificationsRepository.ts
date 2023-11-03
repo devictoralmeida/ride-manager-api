@@ -42,4 +42,12 @@ export class InMemorySpecificationsRepository
 
     return allSpecifications
   }
+
+  async findById(id: string): Promise<Specification> {
+    const findedSpecification = this.specifications.find(
+      (specification) => specification.id === id,
+    )
+
+    return findedSpecification
+  }
 }
