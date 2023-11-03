@@ -730,7 +730,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/response/Rental"
+                  "$ref": "#/response/RentalDevolution"
                 }
               }
             }
@@ -982,12 +982,23 @@
         "id": "2309f1c1-6a87-4754-acb1-bfef55893678",
         "car_id": "5ee0fcea-3af5-444b-a393-c7da07c9f0c0",
         "user_id": "a63efeba-f9fe-4705-b7b8-0f52841ad7f3",
-        "total": 100,
+        "created_at": "2023-10-29T17:32:28Z",
+        "start_date": "2023-10-29T17:32:28Z",
+        "expected_return_date": "2023-10-31T17:32:28Z"
+      }
+    },
+    "RentalDevolution": {
+      "type": "object",
+      "example": {
+        "id": "2309f1c1-6a87-4754-acb1-bfef55893678",
+        "car_id": "5ee0fcea-3af5-444b-a393-c7da07c9f0c0",
+        "user_id": "a63efeba-f9fe-4705-b7b8-0f52841ad7f3",
         "created_at": "2023-10-29T17:32:28Z",
         "updated_at": "2023-10-29T17:32:28Z",
         "start_date": "2023-10-29T17:32:28Z",
         "expected_return_date": "2023-10-31T17:32:28Z",
-        "end_date": "2023-10-31T10:30:28Z"
+        "end_date": "2023-10-31T10:30:28Z",
+        "total": 50
       }
     },
     "RentalAndCar": {
