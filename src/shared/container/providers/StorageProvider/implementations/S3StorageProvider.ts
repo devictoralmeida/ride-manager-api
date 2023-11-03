@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import { S3 } from 'aws-sdk'
 import { resolve } from 'path'
 import fs from 'fs'

@@ -18,6 +18,10 @@
     "seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.441.0",
+    "@aws-sdk/client-ses": "^3.441.0",
+    "@aws-sdk/client-sts": "^3.441.0",
+    "@aws-sdk/credential-provider-node": "^3.441.0",
     "@sentry/node": "^7.73.0",
     "@sentry/profiling-node": "^1.2.1",
     "aws-sdk": "2.1467.0",

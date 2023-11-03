@@ -10,13 +10,16 @@ export class SesMailProvider implements IMailProvider {
   private client: Transporter
 
   constructor() {
-    const ses = new aws.SES({
-      apiVersion: '2010-12-01',
-      region: process.env.AWS_REGION,
-    })
+    // const ses = new aws.SES({
+    //   apiVersion: '2010-12-01',
+    //   region: process.env.AWS_REGION,
+    // })
 
     this.client = nodemailer.createTransport({
-      SES: { ses, aws },
+      SES: new aws.SES({
+        apiVersion: '2010-12-01',
+        region: process.env.AWS_REGION,
+      }),
     })
   }
 
@@ -32,8 +35,10 @@ export class SesMailProvider implements IMailProvider {
 
     const templateHTML = templateParse(variables)
 
+    const from = 'devictoralmeida@devictoralmeida.com.br'
+
     await this.client.sendMail({
-      from: 'Ride Manager <devictoralmeida@devictoralmeida.com.br>',
+      from,
       to,
       subject,
       html: templateHTML,
