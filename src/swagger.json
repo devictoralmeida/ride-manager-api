@@ -637,6 +637,135 @@
           }
         }
       }
+    },
+    "/rentals/user": {
+      "get": {
+        "tags": ["Rentals"],
+        "summary": "List all rentals by user",
+        "description": "List all rentals by user",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/response/RentalAndCar"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rentals": {
+      "post": {
+        "tags": ["Rentals"],
+        "summary": "Create a new rent to an existing car",
+        "description": "Create a new rent to an existing car, minimal rent time is 24h or 1 day.",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/definitions/Rental"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/response/Rental"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Car is unavailable OR There is a rental in progress for user! OR Invalid return time!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Car is unavailable",
+                    "message2": "There is a rental in progress for user!",
+                    "message3": "Invalid return time!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rentals/devolution/{id}": {
+      "post": {
+        "tags": ["Rentals"],
+        "summary": "Route for returning a car",
+        "description": "Route for returning a car",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Rental id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/response/Rental"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "This rental does not belongs to the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "This rental does not belongs to the user."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Rental does not exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Rental does not exists."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -862,6 +991,32 @@
         "start_date": "2023-10-29T17:32:28Z",
         "expected_return_date": "2023-10-31T17:32:28Z",
         "end_date": "2023-10-31T10:30:28Z"
+      }
+    },
+    "RentalAndCar": {
+      "type": "object",
+      "example": {
+        "id": "2309f1c1-6a87-4754-acb1-bfef55893678",
+        "car_id": "5ee0fcea-3af5-444b-a393-c7da07c9f0c0",
+        "user_id": "a63efeba-f9fe-4705-b7b8-0f52841ad7f3",
+        "total": 100,
+        "created_at": "2023-10-29T17:32:28Z",
+        "updated_at": "2023-10-29T17:32:28Z",
+        "start_date": "2023-10-29T17:32:28Z",
+        "expected_return_date": "2023-10-31T17:32:28Z",
+        "end_date": "2023-10-31T10:30:28Z",
+        "car": {
+          "id": "ddd9588f-b5c8-4a00-98f9-381959e1c017",
+          "name": "Car name",
+          "description": "Car description",
+          "brand": "Car brand",
+          "daily_rate": 100,
+          "fine_amount": 60,
+          "license_plate": "ABA-1234",
+          "available": true,
+          "category_id": "ddd9588f-b5c8-4a00-98f9-381959e1c01a",
+          "created_at": "2023-10-31T17:32:28Z"
+        }
       }
     },
     "Category": {
