@@ -1,50 +1,28 @@
+import { NextFunction, Request, Response } from 'express'
+import { IRateLimiterOptions, RateLimiterMemory } from 'rate-limiter-flexible'
 import AppError from '@shared/errors/AppError'
-import { Request, Response, NextFunction } from 'express'
-import Redis from 'ioredis'
-import { RateLimiterRedis, RateLimiterRes } from 'rate-limiter-flexible'
 
-let rateLimiter: RateLimiterRedis | null = null
+const MAX_REQUEST_LIMIT = 150
+const MAX_REQUEST_WINDOW = 25 * 60
 
-const redisClient = new Redis({
-  port: Number(process.env.REDIS_PORT),
-  host: process.env.REDIS_HOST,
-})
-
-redisClient.on('error', (error: any) => {
-  console.warn('redis error', error)
-})
-
-const opts = {
-  storeClient: redisClient,
-  points: 2,
-  duration: 10,
-  execEvenly: false,
-  blockDuration: 0,
-  keyPrefix: 'ensrl',
+const options: IRateLimiterOptions = {
+  duration: MAX_REQUEST_WINDOW,
+  points: MAX_REQUEST_LIMIT,
 }
 
-rateLimiter = new RateLimiterRedis(opts)
+const rateLimiter = new RateLimiterMemory(options)
 
-export async function rateLimitMiddleware(
+export const rateLimiterMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
-) {
-  if (!rateLimiter) {
-    return next()
-  }
-
-  const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-
-  try {
-    await rateLimiter.consume(clientIP as string)
-    next()
-  } catch (error) {
-    if (error instanceof RateLimiterRes) {
+) => {
+  rateLimiter
+    .consume(req.ip)
+    .then(() => {
+      next()
+    })
+    .catch(() => {
       throw new AppError('Too many requests', 429)
-    } else {
-      console.error('An unexpected error occurred:', error)
-      next(error)
-    }
-  }
+    })
 }

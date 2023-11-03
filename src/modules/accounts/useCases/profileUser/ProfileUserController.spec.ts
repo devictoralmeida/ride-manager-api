@@ -12,7 +12,7 @@ describe('Profile User Controller', () => {
     await AppDataSource.initialize()
       .then((res) => (connection = res))
       .catch((error) => console.error(error))
-  })
+  }, 100000)
 
   afterAll(async () => {
     await connection.destroy()

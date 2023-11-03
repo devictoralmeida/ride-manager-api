@@ -4,18 +4,18 @@ import 'dotenv/config'
 import './shared/container'
 import * as Sentry from '@sentry/node'
 import { ProfilingIntegration } from '@sentry/profiling-node'
-import express, { NextFunction, Request, Response } from 'express'
+import express from 'express'
 import cors from 'cors'
 import upload from '@config/upload'
 import swaggerUi from 'swagger-ui-express'
 import swaggerFile from './swagger.json'
 import { router } from './shared/infra/http/routes'
 import { handleErrors } from './shared/infra/http/middlewares/handleErrors'
-import { rateLimitMiddleware } from '@shared/infra/http/middlewares/rateLimiter'
+import { rateLimiterMiddleware } from '@shared/infra/http/middlewares/rateLimiter'
 
 const app = express()
 
-app.use(rateLimitMiddleware)
+app.use(rateLimiterMiddleware)
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,

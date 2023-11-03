@@ -62,6 +62,6 @@ export class SendForgotPasswordMailUseCase {
       templatePath,
     )
 
-    return { message: 'Email sent with sucess' }
+    return { message: 'Email sent with success' }
   }
 }

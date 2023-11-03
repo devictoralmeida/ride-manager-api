@@ -3,6 +3,7 @@ import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepositor
 import { IStorageProvider } from '@shared/container/providers/StorageProvider/IStorageProvider'
 import { inject, injectable } from 'tsyringe'
 import { User } from '@modules/accounts/infra/typeorm/entities/User'
+import AppError from '@shared/errors/AppError'
 
 interface IRequest {
   user_id: string
@@ -22,16 +23,15 @@ export class UpdateUserAvatarUseCase {
   async execute({ user_id, avatar_file }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id)
 
-    if (user) {
-      if (user.avatar) {
-        await this.storageProvider.delete(user.avatar, 'avatar')
-      }
-
-      await this.storageProvider.save(avatar_file, 'avatar')
-
-      user.avatar = avatar_file
-      await this.usersRepository.create(user)
-      return user
+    if (!user) {
+      throw new AppError('User not found', 404)
     }
+
+    await this.storageProvider.delete(user.avatar, 'avatar')
+    await this.storageProvider.save(avatar_file, 'avatar')
+
+    user.avatar = avatar_file
+    await this.usersRepository.updateAvatar(user)
+    return user
   }
 }

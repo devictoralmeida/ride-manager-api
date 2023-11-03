@@ -2,19 +2,21 @@ import app from '../../../../app'
 import { DataSource } from 'typeorm'
 import request from 'supertest'
 import { AppDataSource } from '../../../../data-source'
-import { createAndAuthenticateCommonUser } from '@shared/infra/typeorm/seed/test/createAndAuthenticateCommonUser'
 import { Category } from '@modules/cars/infra/typeorm/entities/Category'
 import { Car } from '@modules/cars/infra/typeorm/entities/Car'
 import dayjs from 'dayjs'
+import { createAndAuthenticateAdmin } from '@shared/infra/typeorm/seed/test/createAndAuthenticateAdmin'
+// import { createAndAuthenticateCommonUser } from '@shared/infra/typeorm/seed/test/createAndAuthenticateCommonUser'
 
-describe('List User Rentals', () => {
+describe('List User Rentals Controller', () => {
   let connection: DataSource
+  const addThreeDays = dayjs().add(3, 'day').toDate()
 
   beforeAll(async () => {
     await AppDataSource.initialize()
       .then((res) => (connection = res))
       .catch((error) => console.error(error))
-  })
+  }, 100000)
 
   afterAll(async () => {
     await connection.destroy()
@@ -36,15 +38,13 @@ describe('List User Rentals', () => {
       fine_amount: 100,
     })
 
-    const { token } = await createAndAuthenticateCommonUser(connection)
+    const { token } = await createAndAuthenticateAdmin(connection)
 
-    const addOneDay = dayjs().add(1, 'day').toDate()
-
-    await request(app)
+    const rent = await request(app)
       .post('/rentals')
       .send({
         car_id: car.id,
-        expected_return_date: addOneDay,
+        expected_return_date: addThreeDays,
       })
       .set({
         Authorization: `Bearer ${token}`,

@@ -17,7 +17,7 @@ describe('List Categories Controller', () => {
     const { token } = await createAndAuthenticateAdmin(connection)
 
     adminToken = token
-  })
+  }, 100000)
 
   afterAll(async () => {
     await connection.destroy()

@@ -1,19 +1,20 @@
 import { DataSource } from 'typeorm'
-import { v4 as uuidV4 } from 'uuid'
-import { hash } from 'bcryptjs'
+import { hashSync } from 'bcryptjs'
 import request from 'supertest'
 import app from '../../../../../app'
+import { UsersRepository } from '@modules/accounts/infra/typeorm/repositories/UsersRepository'
 
 export const createAndAuthenticateCommonUser = async (
   connection: DataSource,
 ) => {
-  const password = await hash('1234', 8)
-  const id = uuidV4()
+  const usersRepository = new UsersRepository()
 
-  await connection.query(`
-    INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license)
-      values('${id}', 'John Doe', 'johndoe@gmail.com', '${password}', false, 'now()', 'ORR-7596');
-  `)
+  await usersRepository.create({
+    email: 'johndoe@gmail.com',
+    name: 'John Doe',
+    driver_license: 'ORR-7596',
+    password: hashSync('1234', 8),
+  })
 
   const response = await request(app).post(`/sessions`).send({
     email: 'johndoe@gmail.com',

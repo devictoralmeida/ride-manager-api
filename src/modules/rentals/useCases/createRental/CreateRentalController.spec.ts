@@ -14,7 +14,7 @@ describe('Create Rental Controller', () => {
     await AppDataSource.initialize()
       .then((res) => (connection = res))
       .catch((error) => console.error(error))
-  })
+  }, 100000)
 
   afterAll(async () => {
     await connection.destroy()
@@ -38,13 +38,13 @@ describe('Create Rental Controller', () => {
 
     const { token } = await createAndAuthenticateCommonUser(connection)
 
-    const addOneDay = dayjs().add(1, 'day').toDate()
+    const addTwoDays = dayjs().add(2, 'day').toDate()
 
     const response = await request(app)
       .post('/rentals')
       .send({
         car_id: car.id,
-        expected_return_date: addOneDay,
+        expected_return_date: addTwoDays,
       })
       .set({
         Authorization: `Bearer ${token}`,

@@ -20,8 +20,8 @@ const settings = (): DataSourceOptions => {
     port: Number(process.env.POSTGRES_PORT),
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB,
     logging: true,
+    database: process.env.POSTGRES_DB,
     migrations: ['./src/shared/infra/typeorm/migrations/*.{ts,js}'],
     entities: ['./src/modules/**/infra/typeorm/entities/*.{ts,js}'],
   }

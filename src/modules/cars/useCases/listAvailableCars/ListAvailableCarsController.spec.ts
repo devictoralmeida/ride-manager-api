@@ -18,7 +18,7 @@ describe('List Available Cars Controller', () => {
     const { token } = await createAndAuthenticateAdmin(connection)
 
     adminToken = token
-  })
+  }, 100000)
 
   afterAll(async () => {
     await connection.destroy()

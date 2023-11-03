@@ -11,8 +11,8 @@ export default {
     destination: tmpFolder,
     filename: (request, file, callback) => {
       const fileHash = crypto.randomBytes(16).toString('hex') // Vamos sobrescrever o filename por um hash para não termos arquivos com nomes duplicados
-      const fileName = `${fileHash}-${file.originalname}`
-      return callback(null, fileName) // O 1º parâmetro é o erro que ela deixou como null, e o seguindo é o fileName
+      const fileName = `${fileHash}-${file.originalname.toString().trim()}`
+      return callback(null, fileName.toString().trim()) // O 1º parâmetro é o erro que ela deixou como null, e o seguindo é o fileName
     },
   }),
 }

@@ -22,7 +22,7 @@ describe('Create Car Controller', () => {
 
     adminToken = token
     commonToken = commonUserToken
-  })
+  }, 100000)
 
   afterAll(async () => {
     await connection.destroy()

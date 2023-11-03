@@ -39,8 +39,8 @@ export class EtherealMailProvider implements IMailProvider {
 
     const templateHTML = templateParse(variables)
 
-    const message = await this.client.sendMail({
-      from: 'Rentx <noreply@rentx.com.br>',
+    await this.client.sendMail({
+      from: 'ride-manager <noreply@ride-manager.com.br>',
       to,
       subject,
       html: templateHTML,
