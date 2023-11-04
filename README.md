@@ -2,22 +2,15 @@
     <img src="./src/assets/logo.png" alt="Ride Manager Logo" />
 </div>
 
-</br>
-
-<h3 align="center">
-  A URL base da api é: https://api.ridemanager.com.br
-</h3>
-
-</br>
+## 📍 URL Base
+A URL base da api é: https://api.ridemanager.com.br
 
 ## 📚 Documentação:
 
 Todos os endpoints da API foram documentados usando Swagger. Para visualizar basta acessar a URL abaixo. Lembre-se de iniciar o servidor primeiro
 
-Local: http://localhost:3333/api-docs
-Produção: https://api.ridemanager.com.br/api-docs
-
-</br>
+<p>Local: <a href="http://localhost:3333/api-docs" target="_blank">http://localhost:3333/api-docs</a></p>
+<p>Produção: <a href="https://api.ridemanager.com.br/api-docs" target="_blank">https://api.ridemanager.com.br/api-docs</a></p>
 
 ## 📌 Visão Geral
 
@@ -56,7 +49,6 @@ O projeto se trata de uma API Rest desenvolvida com Node e Express, com o objeti
 - Swagger;
 - Jest;
 - Babel;
-
 
 ### Diagrama de entidades e relacionamentos
 
