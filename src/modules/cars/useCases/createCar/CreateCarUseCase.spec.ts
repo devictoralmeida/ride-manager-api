@@ -60,7 +60,7 @@ describe('Create Car UseCase', () => {
     })
 
     await expect(result).rejects.toEqual(
-      new AppError('Car already exists', 409),
+      new AppError('Car already exists!', 409),
     )
   })
 })

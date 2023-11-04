@@ -7,7 +7,7 @@ import { Category } from '../entities/Category'
 import { AppDataSource } from '../../../../../data-source'
 
 export class CategoriesRepository implements ICategoriesRepository {
-  private repository: Repository<Category> // Assim só teremos acesso aos métodos do typeORM aqui dentro
+  private repository: Repository<Category>
 
   constructor() {
     this.repository = AppDataSource.getRepository(Category)

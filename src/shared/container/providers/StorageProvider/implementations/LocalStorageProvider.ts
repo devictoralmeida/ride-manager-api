@@ -17,7 +17,7 @@ export class LocalStorageProvider implements IStorageProvider {
     const filename = resolve(`${upload.tmpFolder}/${folder}`, file)
 
     try {
-      await fs.promises.stat(filename) // O método stat verifica se existe algum arquivo no diretório que ele receberá
+      await fs.promises.stat(filename)
     } catch {
       return
     }

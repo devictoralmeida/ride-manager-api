@@ -18,14 +18,13 @@ export class ImportCategoryUseCase {
 
   loadCategories(file: Express.Multer.File): Promise<IImportCategory[]> {
     return new Promise((resolve, reject) => {
-      // Precisamos colocar tudo dentro de uma promisse, para retornar o array quando acabar de ler o arquivo.
       const stream = fs.createReadStream(file.path)
 
       const categories: IImportCategory[] = []
 
-      const parseFile = csvParse() // Chamando a lib de parseCSVfile
+      const parseFile = csvParse()
 
-      stream.pipe(parseFile) // A cada chunk lido o pipe irá envia-lo para a lib parseFile.
+      stream.pipe(parseFile)
 
       parseFile
         .on('data', async (line) => {
@@ -33,7 +32,7 @@ export class ImportCategoryUseCase {
           categories.push({ name, description })
         })
         .on('end', () => {
-          fs.promises.unlink(file.path) // Removendo o arquivo que ficaria na pasta temporária
+          fs.promises.unlink(file.path)
           resolve(categories)
         })
         .on('error', (err: any) => {

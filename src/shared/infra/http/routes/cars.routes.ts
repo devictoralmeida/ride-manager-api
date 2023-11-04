@@ -35,7 +35,7 @@ carsRoutes.post(
   '/images/:id',
   ensureAuthenticated,
   ensureAdmin,
-  upload.array('images'), // entre aspas está o mesmo nome images que tem no reques.files do controller
+  upload.array('images'),
   uploadCarImageController.handle,
 )
 

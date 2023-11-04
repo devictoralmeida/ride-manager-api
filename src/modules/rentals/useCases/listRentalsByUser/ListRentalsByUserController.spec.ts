@@ -6,7 +6,6 @@ import { Category } from '@modules/cars/infra/typeorm/entities/Category'
 import { Car } from '@modules/cars/infra/typeorm/entities/Car'
 import dayjs from 'dayjs'
 import { createAndAuthenticateAdmin } from '@shared/infra/typeorm/seed/test/createAndAuthenticateAdmin'
-// import { createAndAuthenticateCommonUser } from '@shared/infra/typeorm/seed/test/createAndAuthenticateCommonUser'
 
 describe('List User Rentals Controller', () => {
   let connection: DataSource

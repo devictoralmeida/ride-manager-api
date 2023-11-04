@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { CreateCarUseCase } from '../createCar/CreateCarUseCase'
 import { InMemoryCarsRepository } from '@modules/cars/repositories/in-memory/InMemoryCarsRepository'
 import { ListAvailableCarsUseCase } from './ListAvailableCarsUseCase'
@@ -41,24 +42,6 @@ describe('List Cars', () => {
     expect(cars).toHaveLength(2)
     expect(cars).toEqual([car1, car2])
   })
-
-  // it('should NOT be able to list a unavailable car', async () => {
-  //   const car1 = await inMemoryCarsRepository.create({
-  //     brand: 'Car_brand',
-  //     daily_rate: 150,
-  //     description: 'Car description',
-  //     fine_amount: 100,
-  //     license_plate: 'JKL-1585',
-  //     name: 'Car 1',
-  //     category_id: 'category_id',
-  //     available: false,
-  //   })
-
-  //   const cars = await listAvailableCarsUseCase.execute()
-
-  //   expect(cars).toHaveLength(2)
-  //   expect(cars).toEqual([car1, car2])
-  // })
 
   it('should be able to list all available cars by name', async () => {
     const car1 = await inMemoryCarsRepository.create({

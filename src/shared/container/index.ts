@@ -16,8 +16,8 @@ import { UsersTokensRepository } from '@modules/accounts/infra/typeorm/repositor
 import { IUsersTokensRepository } from '@modules/accounts/repositories/IUsersTokensRepository'
 
 container.registerSingleton<ICategoriesRepository>(
-  'CategoriesRepository', // nome do container
-  CategoriesRepository, // Essa será a classe que será passada toda vez que chamar-mos o container
+  'CategoriesRepository',
+  CategoriesRepository,
 )
 
 container.registerSingleton<ISpecificationRepository>(
