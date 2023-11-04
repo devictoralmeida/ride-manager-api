@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Documentation RideManager",
-    "description": "API developed for a car rental company",
+    "description": "API developed for a car rental company. To execute and test routes protected by admin token, make sure you have run migrations and seeds before starting the server in local development",
     "version": "1.0.0",
     "contact": {
       "email": "victoremmanuelmn@gmail.com"
@@ -512,7 +512,34 @@
       "get": {
         "tags": ["Cars"],
         "summary": "List all available cars",
-        "description": "List all available cars",
+        "description": "List all available cars, this accepts the following parameters:",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "List car by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "description": "List car by category id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "description": "List car by brand name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",

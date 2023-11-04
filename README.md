@@ -85,7 +85,12 @@ cp .env.example .env
 npm run typeorm:run
 ```
 
-7. Execute a aplicação
+7. Rode as seeds para criação do usuário super administrador com email 'admin@ride-manager.com.br' e senha 'admin'
+```shell
+npm run seed:admin
+```
+
+8. Execute a aplicação
 ```shell
 npm run dev
 # O servidor será executado na porta 3333 (http://localhost:3333)
@@ -95,9 +100,12 @@ npm run dev
 
 Nesta aplicação, são contemplados Testes Unitários e Testes de Integração utilizando o framework de testes Jest, visando garantir o correto funcionamento das funcionalidades e manter a aplicação de acordo com os requisitos. Para rodar a bateria de todos os testes, utilize:
 
+1. Você pode rodar todos os testes com o seguinte comando
 ```shell
 npm run test
 ```
+
+2. Para testar localmente suas rotas com o insomnia, baixe e faça upload do seguinte arquivo <a href='./src/assets/Insomnia-routes.json' target='_blank'>clicando aqui.</a>
 
 ## Diagrama de entidades e relacionamentos
 
