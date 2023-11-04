@@ -50,14 +50,7 @@ O projeto se trata de uma API Rest desenvolvida com Node e Express, com o objeti
 - Jest;
 - Babel;
 
-### Diagrama de entidades e relacionamentos
-
-</br>
-<div align="center">
-  <img src="./src/assets/diagram.png" alt="Rotas da aplicação" />
-</div>
-
-#### 💻 Instalação, Dependências e Executando o Projeto
+## 💻 Instalação, Dependências e Executando o Projeto
 
 1. Clone este repositório
 
@@ -87,7 +80,7 @@ docker-compose up -d
 cp .env.example .env
 ```
 
-5. Rode as migrações
+6. Rode as migrações
 ```shell
 npm run typeorm:run
 ```
@@ -98,11 +91,17 @@ npm run dev
 # O servidor será executado na porta 3333 (http://localhost:3333)
 ```
 
-#### 💉 Rodando os testes
+## 💉 Rodando os testes
 
-Nesta aplicação, são contemplados Testes Unitários e Testes de Integração utilizando o framework de testes Jest, visando garantir o correto funcionamento das funcionalidades e manter a aplicação de acordo com os requisitos.
+Nesta aplicação, são contemplados Testes Unitários e Testes de Integração utilizando o framework de testes Jest, visando garantir o correto funcionamento das funcionalidades e manter a aplicação de acordo com os requisitos. Para rodar a bateria de todos os testes, utilize:
 
-1. Para rodar a bateria de todos os testes, utilize:
 ```shell
 npm run test
 ```
+
+## Diagrama de entidades e relacionamentos
+
+</br>
+<div align="center">
+  <img src="./src/assets/diagram.png" alt="Rotas da aplicação" />
+</div>
