@@ -9,7 +9,7 @@ export class ImportCategoryController {
 
     const importCategoryUseCase = container.resolve(ImportCategoryUseCase)
 
-    await importCategoryUseCase.execute(file!)
+    await importCategoryUseCase.execute(file)
     return response.status(201).json()
   }
 }
